@@ -1,1 +1,2 @@
-![SOCXIMA.IA COMPLETA](https://i.ibb.co/3cX7w9M/socxima-final.jpg)
+![SOCXIMA.IA](https://i.ibb.co/BV46yG8/socxima-banner-final.png)
+
