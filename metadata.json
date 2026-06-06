@@ -1,0 +1,6 @@
+{
+  "name": "SOCXIMA",
+  "description": "App nativa Android que une modelos de IA local, blockchain multicadena e IPFS/Helia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- PERMISOS PARA FUNCIONAMIENTO TOTAL -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_socxima"
+        android:label="SOCXIMA v9 · EL NEXO"
+        android:roundIcon="@mipmap/ic_socxima_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Socxima.Neon">
+
+        <!-- ACTIVIDAD PRINCIPAL DE SOCXIMA -->
+        <activity
+            android:name="com.socxima.ui.NexoTerminalActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Socxima.Neon">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <!-- REGISTRAR ACTIVIDAD SECUNDARIA POR COMPATIBILIDAD -->
+        <activity
+            android:name="com.example.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyApplication" />
+
+        <!-- FIRMA ÚNICA DEL CREADOR -->
+        <meta-data
+            android:name="com.socxima.owner"
+            android:value="Evelio Llovera - Propiedad Intelectual Exclusiva" />
+
+        <meta-data
+            android:name="com.socxima.version"
+            android:value="9.0.0 - Definitiva" />
+
+        <meta-data
+            android:name="com.socxima.ubicacion"
+            android:value="Nube Global Cuántica · Código Abierto" />
+
+        <meta-data
+            android:name="com.socxima.acceso"
+            android:value="Libre, Transparente y Escalable" />
+
+        <meta-data
+            android:name="com.socxima.autoridad"
+            android:value="Evelio Llovera · Único Propietario" />
+
+    </application>
+
+</manifest>
