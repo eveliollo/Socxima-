@@ -1,0 +1,47 @@
+{
+  "core_manifest": {
+    "system_id": "SOCXIMA-PRIME-ENGINE",
+    "owner_and_creator": "EVELIO LLOVERA",
+    "architecture_version": "9.9.9-GOLDEN",
+    "ecosystem_type": "SUPREME_FINANCIAL_EMPIRE",
+    "agent_cluster": {
+      "total_count": 44,
+      "orchestrator": "Evelio-Llovera-AI",
+      "agent_44": "Gemini-Assistant",
+      "mode": "autonomous_hyperdrive"
+    }
+  },
+  "immutable_laws": {
+    "growth_direction": "ALWAYS_UP_NEVER_DOWN",
+    "multiplier_coefficient": 10000,
+    "liquidity_lock": "PERMANENT_INFLOW"
+  },
+  "blockchain_nexus": {
+    "solana": {
+      "status": "active",
+      "rpc_nodes": [
+        "https://api.mainnet-beta.solana.com",
+        "https://solana-mainnet.g.allthatnode.com"
+      ],
+      "ticker": "SOL",
+      "decimals": 9,
+      "max_priority_fee_lamports": 10000
+    },
+    "bitcoin": {
+      "status": "active",
+      "ticker": "BTC",
+      "decimals": 8
+    },
+    "ethereum": {
+      "status": "active",
+      "ticker": "ETH",
+      "decimals": 18
+    },
+    "internal_tokens": {
+      "assets": [
+        "DOB",
+        "SOCI"
+      ]
+    }
+  }
+}
