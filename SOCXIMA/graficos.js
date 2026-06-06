@@ -112,6 +112,35 @@ class SOCXIMANeuralRenderer {
     }
 }
 
+// Inicialización e Interacción
 document.addEventListener("DOMContentLoaded", () => {
     window.SOCXIMA_CORE_UI = new SOCXIMANeuralRenderer("miGrafica");
 });
+
+window.procesarPromptLocal = function() {
+    const input = document.getElementById("promptInput");
+    if (!input) return;
+
+    const texto = input.value.trim();
+    
+    // Si está vacío, genera un pulso caótico aleatorio de prueba
+    if (texto === "") {
+        const pulsoAleatorio = Array.from({length: 12}, () => Math.floor(Math.random() * 22) + 5);
+        window.SOCXIMA_CORE_UI.streamTensorData(pulsoAleatorio);
+        return;
+    }
+
+    const numChars = texto.length;
+    let nuevosTensores = [];
+    
+    // Algoritmo armónico local para calcular la deformación de la onda
+    for(let i = 0; i < 12; i++) {
+        let onda1 = Math.sin(i * 0.5 + numChars) * 8;
+        let onda2 = Math.cos(i * 0.3 + numChars * 2) * 4;
+        let amplitud = onda1 + onda2 + 15;
+        nuevosTensores.push(Math.max(3, Math.min(30, amplitud)));
+    }
+
+    window.SOCXIMA_CORE_UI.streamTensorData(nuevosTensores);
+    input.value = ""; 
+};
