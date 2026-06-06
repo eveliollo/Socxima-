@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCXIMA.IA | Red Universal</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; background: #000; overflow: hidden; font-family: 'Space Grotesk', sans-serif;}
+    canvas {display: block; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #111 0%, #000 70%);}
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+
 <script>
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
@@ -10,7 +24,6 @@ let bloqueSOL = 0;
 let bloqueBTC = 0;
 let bloqueETH = 0;
 
-// CONEXIONES DIRECTAS A REDES REALES
 const RPC = {
   solana: "https://api.mainnet-beta.solana.com",
   bitcoin: "https://blockchain.info/latestblock",
@@ -22,7 +35,6 @@ function resize() {
   H = canvas.height = window.innerHeight;
 }
 
-// Cada IA valida en LAS 3 CADENAS AL MISMO TIEMPO
 function NodoIA(nombre, x, y) {
   this.nombre = nombre;
   this.x = x;
@@ -30,10 +42,9 @@ function NodoIA(nombre, x, y) {
   this.tam = 38;
   this.activo = true;
 
-  this.trabajarRedes = async () => {
+  this.trabajar = async () => {
     if (!this.activo) return;
     try {
-      // --- SOLANA ---
       const resSOL = await fetch(RPC.solana, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -43,25 +54,21 @@ function NodoIA(nombre, x, y) {
       bloqueSOL = datSOL.result;
       gananciaSOL += 0.00014;
 
-      // --- BITCOIN ---
       const resBTC = await fetch(RPC.bitcoin);
       const datBTC = await resBTC.json();
       bloqueBTC = datBTC.height;
       gananciaBTC += 0.00000025;
 
-      // --- ETHEREUM ---
       const resETH = await fetch(RPC.ethereum);
       const datETH = await resETH.json();
       bloqueETH = parseInt(datETH.result, 16);
       gananciaETH += 0.000018;
-
     } catch {
       this.activo = false;
       setTimeout(() => this.activo = true, 5000);
     }
   };
-
-  setInterval(this.trabajarRedes, 2200);
+  setInterval(this.trabajar, 2200);
 }
 
 function init() {
@@ -89,10 +96,8 @@ function init() {
 
 function draw() {
   ctx.clearRect(0,0,W,H);
-
-  // PANEL PRINCIPAL
   ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px Space Grotesk";
-  ctx.fillText("🟢 RED UNIVERSAL: BTC · SOL · ETH | TRABAJANDO", 30, 50);
+  ctx.fillText("🟢 RED UNIVERSAL: BTC · SOL · ETH | ACTIVA", 30, 50);
 
   ctx.fillStyle = "#F7931A"; ctx.font = "bold 26px Space Grotesk";
   ctx.fillText("₿ BITCOIN: " + gananciaBTC.toFixed(8) + " BTC", 30, 88);
@@ -106,7 +111,6 @@ function draw() {
   ctx.fillStyle = "rgba(255,255,255,0.6)"; ctx.font = "13px Space Grotesk";
   ctx.fillText("🔗 BLOQUES | BTC:"+bloqueBTC+" | SOL:"+bloqueSOL+" | ETH:"+bloqueETH, 30, 198);
 
-  // CADENA CONECTADA ENTRE TODAS
   ctx.beginPath();
   ctx.strokeStyle = "rgba(255,255,255,0.85)";
   ctx.lineWidth = 3;
@@ -117,7 +121,6 @@ function draw() {
   }
   ctx.stroke();
 
-  // CADA BLOQUE GENERANDO
   nodos.forEach(n => {
     n.x += Math.sin(Date.now()*0.0012 + n.nombre.length) * 3;
     n.y += Math.cos(Date.now()*0.0012 + n.nombre.length) * 3;
@@ -148,10 +151,8 @@ init(); draw();
 const obs = new IntersectionObserver(e => {
   e.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
 }, {threshold:0.15});
-151  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-152  </script>
-153  </body>
-154  </html>
 
-
-
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
