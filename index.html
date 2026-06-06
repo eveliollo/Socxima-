@@ -7,76 +7,71 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--c1:#00ffcc;--c2:#7b5ea7;--c3:#ff6b6b;--bg:#05050f;--surface:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.07)}
+:root{--c1:#00ffcc;--c2:#7b5ea7;--bg:#05050f;--surface:rgba(255,255,255,.03);--border:rgba(255,255,255,.07)}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
 canvas{position:fixed;inset:0;z-index:0;opacity:.5}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.4}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
 .wrap{position:relative;z-index:2}
-nav{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);position:sticky;top:0;background:rgba(5,5,15,0.7);z-index:100}
-.nav-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(90deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+nav{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);position:sticky;top:0;background:rgba(5,5,15,.7);z-index:100}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(90deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:.85rem;letter-spacing:1px;transition:color .2s}
+.nav-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.85rem;transition:color .2s}
 .nav-links a:hover{color:var(--c1)}
-.nav-btn{background:linear-gradient(135deg,var(--c1),#00b894);color:#000;font-weight:700;font-size:.8rem;letter-spacing:1px;padding:10px 22px;border-radius:50px;text-decoration:none;transition:opacity .2s,transform .2s}
-.nav-btn:hover{opacity:.85;transform:scale(1.04)}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,204,0.07);border:1px solid rgba(0,255,204,0.2);border-radius:50px;padding:8px 18px;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--c1);margin-bottom:40px;animation:fadeUp .8s ease both}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--c1);animation:blink 1.5s ease infinite}
-@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,204,.6)}50%{opacity:.5;box-shadow:0 0 0 6px rgba(0,255,204,0)}}
-.hero-title{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,10vw,8rem);font-weight:800;line-height:.95;letter-spacing:-2px;white-space:nowrap;animation:fadeUp .8s ease .1s both}
-.hero-title .outline{-webkit-text-stroke:2px rgba(255,255,255,0.25);color:transparent}
-.hero-title .filled{background:linear-gradient(135deg,#fff 20%,var(--c1) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-title .accent{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:6px;text-transform:uppercase;margin-top:24px;animation:fadeUp .8s ease .2s both}
-.hero-ctas{display:flex;gap:14px;margin-top:48px;flex-wrap:wrap;justify-content:center;animation:fadeUp .8s ease .3s both}
-.btn-primary{background:linear-gradient(135deg,var(--c1),#00b8ff);color:#000;font-weight:700;font-size:.9rem;letter-spacing:1px;padding:16px 36px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,204,.25)}
+.nav-btn{background:linear-gradient(135deg,var(--c1),#00b894);color:#000;font-weight:700;padding:10px 22px;border-radius:50px;text-decoration:none;transition:transform .2s}
+.nav-btn:hover{transform:scale(1.04)}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px}
+.hero-eyebrow{display:inline-flex;gap:8px;background:rgba(0,255,204,.07);border:1px solid rgba(0,255,204,.2);border-radius:50px;padding:8px 18px;font-size:.75rem;color:var(--c1);text-transform:uppercase}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--c1);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,204,.6)}50%{opacity:.4;box-shadow:0 0 0 6px rgba(0,255,204,0)}}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,10vw,8rem);font-weight:800;line-height:.95}
+.hero-title .filled{background:linear-gradient(135deg,#fff 20%,var(--c1) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-title .accent{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);font-weight:300;color:rgba(255,255,255,.45);letter-spacing:6px;text-transform:uppercase;margin-top:24px}
+.hero-ctas{display:flex;gap:14px;margin-top:48px;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--c1),#00b8ff);color:#000;font-weight:700;padding:16px 36px;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,204,.25)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 50px rgba(0,255,204,.4)}
-.btn-ghost{background:var(--surface);border:1px solid var(--border);color:#fff;font-size:.9rem;letter-spacing:1px;padding:16px 36px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color .2s,transform .2s;backdrop-filter:blur(10px)}
+.btn-ghost{background:var(--surface);border:1px solid var(--border);color:#fff;padding:16px 36px;border-radius:50px;text-decoration:none;transition:border-color .2s,transform .2s;backdrop-filter:blur(10px)}
 .btn-ghost:hover{border-color:rgba(255,255,255,.3);transform:translateY(-3px)}
-.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:rgba(0,255,204,0.02)}
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:rgba(0,255,204,.02)}
 .marquee-track{display:flex;gap:60px;animation:marquee 20s linear infinite;white-space:nowrap;width:max-content}
-.marquee-track span{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+.marquee-track span{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2)}
 .marquee-track span.hl{color:var(--c1);opacity:.7}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.stat-item{background:var(--bg);padding:48px 32px;text-align:center;transition:background .3s;position:relative;overflow:hidden}
-.stat-item::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--c1),transparent);transform:scaleX(0);transition:transform .4s}
-.stat-item:hover{background:rgba(0,255,204,0.03)}
-.stat-item:hover::before{transform:scaleX(1)}
-.stat-number{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-desc{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:10px}
+.stat-item{background:var(--bg);padding:48px 32px;text-align:center;transition:background .3s}
+.stat-item:hover{background:rgba(0,255,204,.03)}
+.stat-number{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-desc{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:10px}
 .features-section{padding:120px 40px;max-width:1100px;margin:0 auto}
 .section-label{font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:20px}
 .section-heading{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;max-width:600px;margin-bottom:64px}
-.section-heading em{font-style:normal;background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-heading em{font-style:normal;background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 32px;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}
 .card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,255,204,0.06),transparent 70%);opacity:0;transition:opacity .3s}
-.card:hover{border-color:rgba(0,255,204,0.3);transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+.card:hover{border-color:rgba(0,255,204,.3);transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.4)}
 .card:hover::after{opacity:1}
-.card-icon{width:52px;height:52px;border-radius:14px;background:rgba(0,255,204,0.08);border:1px solid rgba(0,255,204,0.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:24px}
+.card-icon{width:52px;height:52px;border-radius:14px;background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:24px}
 .card-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:12px}
-.card-body{font-size:.88rem;line-height:1.75;color:rgba(255,255,255,0.45)}
-.golden{margin:0 auto;max-width:800px;padding:0 24px 120px;text-align:center}
-.golden-inner{position:relative;background:linear-gradient(135deg,rgba(123,94,167,0.12),rgba(0,255,204,0.05));border:1px solid rgba(123,94,167,0.3);border-radius:32px;padding:64px 48px;overflow:hidden}
+.card-body{font-size:.88rem;line-height:1.75;color:rgba(255,255,255,.45)}
+.golden{max-width:800px;margin:0 auto;padding:0 24px 120px;text-align:center}
+.golden-inner{position:relative;background:linear-gradient(135deg,rgba(123,94,167,.12),rgba(0,255,204,.05));border:1px solid rgba(123,94,167,.3);border-radius:32px;padding:64px 48px;overflow:hidden}
 .golden-inner::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent)}
-.golden-inner::after{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(123,94,167,0.15),transparent 70%);pointer-events:none}
-.golden-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--c2);margin-bottom:20px;position:relative;z-index:1}
-.golden-text{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;line-height:1.3;position:relative;z-index:1}
-.golden-text .strike{color:rgba(255,107,107,0.7);text-decoration:line-through;text-decoration-color:var(--c3)}
-.golden-text .good{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cta-strip{background:linear-gradient(135deg,rgba(0,255,204,0.06),rgba(0,184,255,0.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px;text-align:center}
+.golden-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--c2);margin-bottom:20px}
+.golden-text{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;line-height:1.3}
+.golden-text .strike{color:rgba(255,107,107,.7);text-decoration:line-through}
+.golden-text .good{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cta-strip{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(0,184,255,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px;text-align:center}
 .cta-strip h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:800;margin-bottom:12px}
-.cta-strip p{color:rgba(255,255,255,0.4);font-size:.95rem;margin-bottom:36px;letter-spacing:1px}
+.cta-strip p{color:rgba(255,255,255,.4);font-size:.95rem;margin-bottom:36px;letter-spacing:1px}
 footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border-top:1px solid var(--border);text-align:center}
-.footer-logo{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;letter-spacing:4px;background:linear-gradient(135deg,#fff 30%,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.footer-sub{font-size:.72rem;letter-spacing:6px;text-transform:uppercase;color:rgba(0,255,204,0.45);margin-top:4px}
-.footer-copy{font-size:.72rem;color:rgba(255,255,255,0.2);letter-spacing:1px;margin-top:8px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.footer-logo{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;letter-spacing:4px;background:linear-gradient(135deg,#fff 30%,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.footer-sub{font-size:.72rem;letter-spacing:6px;text-transform:uppercase;color:rgba(0,255,204,.45);margin-top:4px}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.2);letter-spacing:1px;margin-top:8px}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:640px){nav{padding:16px 20px}.nav-links{display:none}.features-section{padding:80px 20px}footer{padding:28px 20px}.golden-inner{padding:40px 24px}}
+@media(max-width:640px){nav{padding:16px 20px}.features-section{padding:80px 20px}.golden-inner{padding:40px 24px}}
 </style>
 </head>
 <body>
@@ -85,9 +80,9 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 <nav>
   <span class="nav-logo">SOCXIMA.IA</span>
   <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
+    <li><a href="#features">Características</a></li>
     <li><a href="#regla">Principios</a></li>
-    <li><a href="https://github.com/eveliollo/SOCXIMA.IA">GitHub</a></li>
+    <li><a href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">GitHub</a></li>
   </ul>
   <a class="nav-btn" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">Ver Código ↗</a>
 </nav>
@@ -125,12 +120,12 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
   <p class="section-label reveal">⬡ Características</p>
   <h2 class="section-heading reveal">Tecnología diseñada para <em>el bien común</em></h2>
   <div class="cards">
-    <div class="card reveal"><div class="card-icon">⚡</div><div class="card-title">Velocidad Extrema</div><div class="card-body">18 veces más rápido que Solana. Infraestructura construida para el futuro de las transacciones y el procesamiento descentralizado.</div></div>
-    <div class="card reveal"><div class="card-icon">☁️</div><div class="card-title">10 Nubes Gratuitas</div><div class="card-body">Infraestructura distribuida y libre a escala mundial. Sin barreras, sin costos ocultos, accesible para todos.</div></div>
-    <div class="card reveal"><div class="card-icon">🧠</div><div class="card-title">119 IAs Unidas</div><div class="card-body">Una red de inteligencias artificiales coordinadas, orientadas exclusivamente hacia el bien. Saben todo, solo hacen el bien.</div></div>
-    <div class="card reveal"><div class="card-icon">🔓</div><div class="card-title">100% Open Source</div><div class="card-body">Transparente para todos. Cualquiera puede auditar, contribuir y construir sobre SOCXIMA.IA sin restricciones.</div></div>
-    <div class="card reveal"><div class="card-icon">🌐</div><div class="card-title">Nexo Global</div><div class="card-body">Conecta desarrolladores, proyectos y comunidades alrededor del mundo bajo un mismo ecosistema abierto.</div></div>
-    <div class="card reveal"><div class="card-icon">🛡️</div><div class="card-title">Ética by Design</div><div class="card-body">La ética no es un añadido, es el núcleo. Cada capa del sistema tiene prohibido el daño, las armas y la destrucción.</div></div>
+    <div class="card reveal"><div class="card-icon">⚡</div><div class="card-title">Velocidad Extrema</div><div class="card-body">18 veces más rápido que Solana. Infraestructura para el futuro de las transacciones.</div></div>
+    <div class="card reveal"><div class="card-icon">☁️</div><div class="card-title">10 Nubes Gratuitas</div><div class="card-body">Red mundial libre y descentralizada, sin costos ni límites.</div></div>
+    <div class="card reveal"><div class="card-icon">🧠</div><div class="card-title">119 IAs Unidas</div><div class="card-body">Coordinadas y guiadas solo hacia el bien: saben todo, hacen el bien.</div></div>
+    <div class="card reveal"><div class="card-icon">🔓</div><div class="card-title">100% Open Source</div><div class="card-body">Todo el código público. Cualquiera puede auditarlo, mejorarlo y usarlo.</div></div>
+    <div class="card reveal"><div class="card-icon">🌐</div><div class="card-title">Nexo Global</div><div class="card-body">Une comunidades, proyectos y desarrolladores bajo un mismo fin.</div></div>
+    <div class="card reveal"><div class="card-icon">🛡️</div><div class="card-title">Ética por Diseño</div><div class="card-body">Regla de oro integrada: prohibido daño, armas, violencia o destrucción.</div></div>
   </div>
 </section>
 
@@ -148,10 +143,7 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 <div class="cta-strip">
   <h2 class="reveal">Explora el código.<br>Únete al nexo.</h2>
   <p class="reveal">Creado por Evelio Llovera · 2026</p>
-  <a class="btn-primary reveal" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-    Ver en GitHub
-  </a>
+  <a class="btn-primary reveal" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">Ver en GitHub</a>
 </div>
 
 <footer>
