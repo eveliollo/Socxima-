@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCXIMA.IA - Premium Dashboard</title>
+  
+  <link rel="stylesheet" href="../estilo-socxima/estilo.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <div class="charts-grid">
+      <div class="mini-chart">
+        <div class="mc-title">MÓDULO IA ACTIVO</div>
+        <div class="mc-price" id="btc-price">$0.00</div>
+        <canvas id="chart-btc"></canvas>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <div id="chat-box"></div>
+    </div>
+
+  </div>
+
+  <script src="graficos.js"></script>
+  
+  <script>
+    // Código de prueba por si quieres ver si funciona el gráfico al cargar:
+    // window.onload = () => { drawSparkline('chart-btc', [10, 15, 8, 25, 18, 30], '#00ffeb'); }
+  </script>
+
+</body>
+</html>
