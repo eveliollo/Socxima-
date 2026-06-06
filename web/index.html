@@ -1,649 +1,114 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOCXIMA IA</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --c:#00fff7;--g:#39ff14;--p:#bf00ff;--gold:#ffd700;
-  --red:#ff003c;--bg:#010a0a;--c2:#00bfb8;
-}
-body{background:var(--bg);font-family:'Share Tech Mono',monospace;color:var(--c);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);pointer-events:none;z-index:999;}
+/* ── MINI SPARKLINE CHARTS (VERSIÓN PREMIUM GLOW) ── */
+function drawSparkline(canvasId, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || data.length < 2) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Multiplicamos por el ratio de píxeles del dispositivo para un renderizado nítido (Retina/4K)
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
 
-/* TOP */
-.top{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:rgba(0,8,8,.95);border-bottom:1px solid rgba(0,255,247,.15);flex-shrink:0;flex-wrap:wrap;gap:8px;}
-.logo{font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--c);text-shadow:0 0 20px var(--c);letter-spacing:4px;}
-.logo span{color:var(--p);}
-.prices{display:flex;flex-wrap:wrap;gap:6px 14px;}
-.price-item{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;}
-.price-item .sym{color:rgba(0,255,247,.5);margin-right:3px;}
-.price-item .val{transition:color .3s;}
-.price-item .chg{font-size:8px;margin-left:3px;}
-.chg.up{color:var(--g);}
-.chg.dn{color:var(--red);}
-.ws-status{font-size:9px;letter-spacing:2px;display:flex;align-items:center;gap:5px;}
-.led{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:pulse 1.5s infinite;}
-.led.on{background:var(--g);box-shadow:0 0 8px var(--g);}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+  const W = rect.width;
+  const H = rect.height;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
 
-/* MAIN */
-.main{flex:1;display:flex;overflow:hidden;min-height:0;}
+  ctx.clearRect(0, 0, W, H);
 
-/* LEFT */
-.left{width:210px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(0,255,247,.08);background:rgba(0,5,5,.9);}
-.panel-hd{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--c2);padding:7px 10px;border-bottom:1px solid rgba(0,255,247,.07);text-align:center;}
-.wallet-form{padding:10px;}
-.wallet-form input{width:100%;background:rgba(0,255,247,.05);border:1px solid rgba(0,255,247,.2);color:var(--c);padding:5px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;outline:none;margin-bottom:5px;}
-.wallet-form input::placeholder{color:rgba(0,255,247,.25);}
-.wallet-form select{width:100%;background:#010f0f;border:1px solid rgba(0,255,247,.2);color:var(--c);padding:5px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;outline:none;margin-bottom:5px;}
-.btn{width:100%;padding:6px;background:rgba(0,255,247,.08);border:1px solid var(--c2);color:var(--c);font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;cursor:pointer;transition:.2s;}
-.btn:hover{background:rgba(0,255,247,.2);}
-.btn.purple{border-color:var(--p);color:var(--p);background:rgba(191,0,255,.08);}
-.btn.purple:hover{background:rgba(191,0,255,.2);}
-.balance-result{padding:8px 10px;font-size:9px;border-top:1px solid rgba(0,255,247,.07);min-height:50px;color:var(--g);}
-
-.tx-feed{flex:1;overflow-y:auto;padding:0;}
-.tx-feed::-webkit-scrollbar{width:2px;}
-.tx-feed::-webkit-scrollbar-thumb{background:rgba(0,255,247,.2);}
-.tx-item{padding:6px 10px;border-bottom:1px solid rgba(0,255,247,.04);animation:fadeIn .3s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;}}
-.tx-item .th{color:var(--c2);font-size:7px;}
-.tx-item .ta{color:var(--gold);font-size:9px;font-weight:700;}
-.tx-item .tc{color:var(--p);font-size:7px;}
-.tx-item .tn{color:var(--g);font-size:7px;}
-
-/* CENTER */
-.center{flex:1;position:relative;overflow:hidden;}
-#cvs{display:block;}
-
-/* RIGHT */
-.right{width:185px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid rgba(0,255,247,.08);background:rgba(0,5,5,.9);}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:8px;border-bottom:1px solid rgba(0,255,247,.07);}
-.sbox{background:rgba(0,255,247,.03);border:1px solid rgba(0,255,247,.09);padding:6px;text-align:center;}
-.sbox .sv{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;text-shadow:0 0 10px currentColor;}
-.sbox .sl{font-size:7px;color:rgba(0,255,247,.4);letter-spacing:1px;margin-top:2px;}
-.sbox.g .sv{color:var(--g);}
-.sbox.gold .sv{color:var(--gold);}
-.sbox.red .sv{color:var(--red);}
-.chains{padding:8px;flex:1;overflow-y:auto;}
-.chains::-webkit-scrollbar{width:2px;}
-.cr{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(0,255,247,.04);font-size:8px;}
-.cr .cn{font-family:'Orbitron',monospace;font-size:7px;font-weight:700;width:30px;}
-.cr .cb{flex:1;height:3px;margin:0 6px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
-.cr .cbf{height:100%;border-radius:2px;transition:width .8s;}
-.cr .cv{font-size:8px;color:var(--g);width:36px;text-align:right;}
-.ai-section{padding:8px;border-top:1px solid rgba(0,255,247,.07);}
-#agentTop{font-size:8px;line-height:1.8;}
-
-/* BOTTOM */
-.bot{padding:5px 14px;background:rgba(0,8,8,.95);border-top:1px solid rgba(0,255,247,.08);font-size:8px;letter-spacing:1.5px;display:flex;gap:16px;align-items:center;flex-shrink:0;flex-wrap:wrap;}
-.bi{display:flex;align-items:center;gap:5px;}
-
-/* AI CHAT */
-.ai-chat{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:320px;z-index:50;background:rgba(1,12,12,.97);border:1px solid rgba(0,255,247,.3);box-shadow:0 0 30px rgba(0,255,247,.15);}
-.ai-chat-hd{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;padding:6px 10px;border-bottom:1px solid rgba(0,255,247,.1);color:var(--p);display:flex;justify-content:space-between;align-items:center;}
-.ai-out{padding:8px 10px;font-size:9px;min-height:50px;max-height:80px;overflow-y:auto;color:var(--g);line-height:1.5;}
-.ai-in{display:flex;border-top:1px solid rgba(0,255,247,.1);}
-.ai-in input{flex:1;background:transparent;border:none;color:var(--c);padding:6px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;outline:none;}
-.ai-in button{padding:6px 10px;background:rgba(191,0,255,.15);border:none;border-left:1px solid rgba(0,255,247,.1);color:var(--p);font-family:'Orbitron',monospace;font-size:8px;cursor:pointer;letter-spacing:1px;}
-
-/* TOOLTIP */
-#tip{position:fixed;background:rgba(1,12,12,.97);border:1px solid var(--c);box-shadow:0 0 16px rgba(0,255,247,.3);padding:8px 12px;font-size:9px;pointer-events:none;z-index:200;display:none;}
-#tip .tn{font-family:'Orbitron',monospace;font-size:11px;font-weight:900;margin-bottom:3px;}
-</style>
-</head>
-<body>
-
-<div class="top">
-  <div class="logo">SOCXIMA <span>IA</span></div>
-  <div class="prices" id="priceBar">
-    <div class="price-item"><span class="sym">BTC</span><span class="val" id="px-BTC">---</span><span class="chg" id="pc-BTC"></span></div>
-    <div class="price-item"><span class="sym">ETH</span><span class="val" id="px-ETH">---</span><span class="chg" id="pc-ETH"></span></div>
-    <div class="price-item"><span class="sym">SOL</span><span class="val" id="px-SOL">---</span><span class="chg" id="pc-SOL"></span></div>
-    <div class="price-item"><span class="sym">BNB</span><span class="val" id="px-BNB">---</span><span class="chg" id="pc-BNB"></span></div>
-    <div class="price-item"><span class="sym">POL</span><span class="val" id="px-POL">---</span><span class="chg" id="pc-POL"></span></div>
-    <div class="price-item"><span class="sym">ADA</span><span class="val" id="px-ADA">---</span><span class="chg" id="pc-ADA"></span></div>
-  </div>
-  <div class="ws-status"><div class="led" id="wsLed"></div> <span id="wsLabel">DESCONECTADO</span></div>
-</div>
-
-<div class="main">
-
-  <!-- LEFT: WALLET + TX FEED -->
-  <div class="left">
-    <div class="panel-hd">⬡ WALLET REAL</div>
-    <div class="wallet-form">
-      <input id="walletAddr" placeholder="0x... o dirección Solana" />
-      <select id="walletChain">
-        <option value="ethereum">ETH Ethereum</option>
-        <option value="bsc">BNB Smart Chain</option>
-        <option value="polygon">POL Polygon</option>
-        <option value="avalanche">AVAX Avalanche</option>
-        <option value="arbitrum">ARB Arbitrum</option>
-        <option value="solana">SOL Solana</option>
-      </select>
-      <button class="btn" onclick="checkBalance()">CONSULTAR BALANCE</button>
-      <button class="btn purple" onclick="fetchTxHistory()" style="margin-top:4px;">VER TXS REALES</button>
-    </div>
-    <div class="balance-result" id="balResult">Introduce una wallet para ver su balance real.</div>
-
-    <div class="panel-hd" style="margin-top:4px;">⬡ ACTIVIDAD EN VIVO</div>
-    <div class="tx-feed" id="txFeed"></div>
-  </div>
-
-  <!-- CANVAS RED DE IAs -->
-  <div class="center">
-    <canvas id="cvs"></canvas>
-  </div>
-
-  <!-- RIGHT: STATS + CHAINS -->
-  <div class="right">
-    <div class="stats-grid">
-      <div class="sbox"><div class="sv" id="s-nodes">100</div><div class="sl">IAs</div></div>
-      <div class="sbox g"><div class="sv" id="s-tps">0</div><div class="sl">TX/S</div></div>
-      <div class="sbox gold"><div class="sv" id="s-blk">—</div><div class="sl">BLOQUE ETH</div></div>
-      <div class="sbox red"><div class="sv" id="s-slot">—</div><div class="sl">SLOT SOL</div></div>
-    </div>
-
-    <div class="chains">
-      <div class="panel-hd" style="margin:-8px -8px 6px;padding:6px 8px;">CADENAS</div>
-      <div class="cr"><span class="cn" style="color:#ff9100">BTC</span><div class="cb"><div class="cbf" id="b-BTC" style="background:#ff9100;width:88%"></div></div><span class="cv" id="t-BTC">7</span></div>
-      <div class="cr"><span class="cn" style="color:#a78bfa">ETH</span><div class="cb"><div class="cbf" id="b-ETH" style="background:#a78bfa;width:70%"></div></div><span class="cv" id="t-ETH">15</span></div>
-      <div class="cr"><span class="cn" style="color:var(--c)">SOL</span><div class="cb"><div class="cbf" id="b-SOL" style="background:var(--c);width:95%"></div></div><span class="cv" id="t-SOL">65K</span></div>
-      <div class="cr"><span class="cn" style="color:var(--p)">POL</span><div class="cb"><div class="cbf" id="b-POL" style="background:var(--p);width:65%"></div></div><span class="cv" id="t-POL">7K</span></div>
-      <div class="cr"><span class="cn" style="color:var(--gold)">BNB</span><div class="cb"><div class="cbf" id="b-BNB" style="background:var(--gold);width:72%"></div></div><span class="cv" id="t-BNB">300</span></div>
-      <div class="cr"><span class="cn" style="color:#3b82f6">ADA</span><div class="cb"><div class="cbf" id="b-ADA" style="background:#3b82f6;width:45%"></div></div><span class="cv" id="t-ADA">250</span></div>
-      <div class="cr"><span class="cn" style="color:#f472b6">ARB</span><div class="cb"><div class="cbf" id="b-ARB" style="background:#f472b6;width:80%"></div></div><span class="cv" id="t-ARB">40K</span></div>
-      <div class="cr"><span class="cn" style="color:#fb923c">AVAX</span><div class="cb"><div class="cbf" id="b-AVAX" style="background:#fb923c;width:60%"></div></div><span class="cv" id="t-AVAX">4.5K</span></div>
-    </div>
-
-    <div class="ai-section">
-      <div class="panel-hd" style="margin:-8px -8px 6px;padding:6px 8px;">TOP AGENTES IA</div>
-      <div id="agentTop"></div>
-    </div>
-  </div>
-
-</div>
-
-<div class="bot">
-  <div class="bi"><div class="led on"></div> NODOS PÚBLICOS: ACTIVOS</div>
-  <div class="bi"><div class="led on"></div> COINGECKO: REAL</div>
-  <div class="bi" style="color:var(--gold)">LATENCIA: <span id="s-lat">—</span></div>
-  <div class="bi" style="margin-left:auto;color:rgba(0,255,247,.2);font-family:'Orbitron',monospace;font-size:7px;">SOCXIMA IA · v2.0</div>
-</div>
-
-<!-- AI CHAT PANEL -->
-<div class="ai-chat">
-  <div class="ai-chat-hd">
-    <span>⬡ AGENTE IA LOCAL (OLLAMA)</span>
-    <span style="color:rgba(0,255,247,.3);font-size:7px;">localhost:11434</span>
-  </div>
-  <div class="ai-out" id="aiOut">Conecta Ollama localmente y escribe un prompt...</div>
-  <div class="ai-in">
-    <input id="aiInput" placeholder="Analiza gas fees ETH..." onkeydown="if(event.key==='Enter')sendAI()"/>
-    <button onclick="sendAI()">ENVIAR</button>
-  </div>
-</div>
-
-<div id="tip"><div class="tn" id="tip-n"></div><div id="tip-i"></div></div>
-
-<script>
-// ═══════════════════════════════════
-// WEBSOCKET → SOCXIMA BACKEND
-// ═══════════════════════════════════
-let ws = null;
-let wsConnected = false;
-
-function connectWS() {
-  try {
-    ws = new WebSocket('ws://localhost:8765');
-    ws.onopen = () => {
-      wsConnected = true;
-      document.getElementById('wsLed').classList.add('on');
-      document.getElementById('wsLabel').textContent = 'BACKEND CONECTADO';
-      addTx({ agent:'SISTEMA', chain:'SOCXIMA IA', amount:'ONLINE', note:'Backend Node.js conectado' });
-    };
-    ws.onclose = () => {
-      wsConnected = false;
-      document.getElementById('wsLed').classList.remove('on');
-      document.getElementById('wsLabel').textContent = 'SIN BACKEND';
-      setTimeout(connectWS, 5000);
-    };
-    ws.onmessage = e => {
-      try {
-        const d = JSON.parse(e.data);
-        if(d.type === 'prices')    updatePrices(d.data);
-        if(d.type === 'block')     updateBlock(d.chain, d.number);
-        if(d.type === 'agent_tx')  handleAgentTx(d.data);
-        if(d.type === 'init')      updatePrices(d.prices);
-      } catch {}
-    };
-  } catch {}
-}
-connectWS();
-
-// ═══════════════════════════════════
-// COINGECKO DIRECTO (funciona sin backend)
-// ═══════════════════════════════════
-const GECKO_IDS = {
-  BTC:'bitcoin',ETH:'ethereum',BNB:'binancecoin',
-  SOL:'solana',POL:'matic-network',ADA:'cardano'
-};
-
-async function fetchPricesDirect() {
-  try {
-    const ids = Object.values(GECKO_IDS).join(',');
-    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-    const data = await res.json();
-    const out = {};
-    for(const [sym, id] of Object.entries(GECKO_IDS)) {
-      if(data[id]) out[sym] = { usd: data[id].usd, change: data[id].usd_24h_change?.toFixed(2) ?? 0 };
-    }
-    updatePrices(out);
-  } catch {}
-}
-
-function updatePrices(p) {
-  for(const [sym, info] of Object.entries(p)) {
-    const ve = document.getElementById('px-'+sym);
-    const ce = document.getElementById('pc-'+sym);
-    if(!ve) continue;
-    const v = info.usd;
-    ve.textContent = v > 1000 ? '$'+Math.round(v).toLocaleString() : v > 1 ? '$'+v.toFixed(3) : '$'+v.toFixed(5);
-    ve.style.color = parseFloat(info.change) >= 0 ? '#39ff14' : '#ff003c';
-    if(ce) {
-      const c = parseFloat(info.change);
-      ce.textContent = (c >= 0 ? '+' : '') + c + '%';
-      ce.className = 'chg ' + (c >= 0 ? 'up' : 'dn');
-    }
-  }
-}
-
-function updateBlock(chain, num) {
-  if(chain === 'ETH') document.getElementById('s-blk').textContent = num.toLocaleString();
-  if(chain === 'SOL') document.getElementById('s-slot').textContent = (num/1000000).toFixed(2)+'M';
-}
-
-// Init prices immediately
-fetchPricesDirect();
-setInterval(fetchPricesDirect, 60000);
-
-// ═══════════════════════════════════
-// WALLET BALANCE (directo via RPC público)
-// ═══════════════════════════════════
-async function checkBalance() {
-  const addr  = document.getElementById('walletAddr').value.trim();
-  const chain = document.getElementById('walletChain').value;
-  const res   = document.getElementById('balResult');
-  if(!addr){ res.textContent = 'Introduce una dirección.'; return; }
-
-  res.textContent = 'Consultando...';
-  res.style.color = 'var(--c2)';
-
-  if(chain === 'solana') {
-    try {
-      const body = { jsonrpc:'2.0',id:1,method:'getBalance',params:[addr] };
-      const r = await fetch('https://api.mainnet-beta.solana.com', {
-        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-      });
-      const d = await r.json();
-      const sol = (d.result.value / 1e9).toFixed(6);
-      res.innerHTML = `<span style="color:var(--g)">✓ SOLANA</span><br>${sol} SOL<br><span style="color:rgba(0,255,247,.4);font-size:8px;">${addr.substring(0,20)}...</span>`;
-    } catch(e) { res.innerHTML = `<span style="color:var(--red)">Error: ${e.message}</span>`; }
-    return;
-  }
-
-  // EVM chains via public RPC
-  const RPC = {
-    ethereum:'https://cloudflare-eth.com',
-    bsc:'https://bsc-dataseed.binance.org/',
-    polygon:'https://polygon-rpc.com',
-    avalanche:'https://api.avax.network/ext/bc/C/rpc',
-    arbitrum:'https://arb1.arbitrum.io/rpc',
-  };
-  const SYM = { ethereum:'ETH',bsc:'BNB',polygon:'POL',avalanche:'AVAX',arbitrum:'ARB' };
-
-  try {
-    const body = { jsonrpc:'2.0',id:1,method:'eth_getBalance',params:[addr,'latest'] };
-    const r = await fetch(RPC[chain], {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-    });
-    const d = await r.json();
-    const wei = parseInt(d.result, 16);
-    const bal = (wei / 1e18).toFixed(6);
-    const sym = SYM[chain];
-    res.innerHTML = `<span style="color:var(--g)">✓ ${chain.toUpperCase()}</span><br>${bal} ${sym}<br><span style="color:rgba(0,255,247,.4);font-size:8px;">${addr.substring(0,18)}...</span>`;
-    addTx({ agent:'WALLET', chain: sym, amount: bal+' '+sym, note: addr.substring(0,12)+'...' });
-  } catch(e) {
-    res.innerHTML = `<span style="color:var(--red)">Error: ${e.message}</span>`;
-  }
-}
-
-async function fetchTxHistory() {
-  const addr = document.getElementById('walletAddr').value.trim();
-  if(!addr){ alert('Introduce una dirección ETH'); return; }
-  const res = document.getElementById('balResult');
-  res.textContent = 'Obteniendo TXs de Etherscan...';
-  try {
-    const r = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${addr}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc&apikey=`);
-    const d = await r.json();
-    if(d.status === '1') {
-      res.innerHTML = d.result.slice(0,5).map(tx =>
-        `<div style="border-bottom:1px solid rgba(0,255,247,.05);padding:3px 0;font-size:8px;">
-          <span style="color:var(--gold)">${(parseInt(tx.value)/1e18).toFixed(4)} ETH</span>
-          <span style="color:rgba(0,255,247,.4)"> ${tx.hash.substring(0,10)}...</span>
-        </div>`
-      ).join('');
-    } else {
-      res.textContent = 'Sin TXs o límite de API.';
-    }
-  } catch(e) {
-    res.textContent = 'Error: '+e.message;
-  }
-}
-
-// ═══════════════════════════════════
-// IA LOCAL (Ollama)
-// ═══════════════════════════════════
-async function sendAI() {
-  const prompt = document.getElementById('aiInput').value.trim();
-  if(!prompt) return;
-  document.getElementById('aiInput').value = '';
-  document.getElementById('aiOut').textContent = 'Procesando en IA local...';
-
-  // Si hay backend conectado, usa el WS
-  if(wsConnected) {
-    const agent = AI_AGENTS[Math.floor(Math.random()*AI_AGENTS.length)];
-    ws.send(JSON.stringify({ action:'ai_agent', agent, task: prompt }));
-    return;
-  }
-
-  // Directo a Ollama (si corre en la misma máquina)
-  try {
-    const r = await fetch('http://localhost:11434/api/generate', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'mistral', prompt, stream:false })
-    });
-    const d = await r.json();
-    document.getElementById('aiOut').textContent = d.response;
-  } catch {
-    document.getElementById('aiOut').textContent =
-      'Ollama no detectado. Instala en https://ollama.ai y ejecuta: ollama pull mistral';
-  }
-}
-
-function handleAgentTx(data) {
-  document.getElementById('aiOut').textContent = data.result || data.task;
-  addTx({ agent: data.agent, chain:'AI', amount:'TASK', note: data.task });
-}
-
-// ═══════════════════════════════════
-// TX FEED
-// ═══════════════════════════════════
-function addTx(tx) {
-  const feed = document.getElementById('txFeed');
-  const el = document.createElement('div');
-  el.className = 'tx-item';
-  el.innerHTML = `
-    <div class="tn">${tx.agent}</div>
-    <div class="ta">${tx.amount}</div>
-    <div class="tc">${tx.chain} · ${tx.note||''}</div>
-    <div class="th">${new Date().toLocaleTimeString()}</div>
-  `;
-  feed.prepend(el);
-  while(feed.children.length > 80) feed.removeChild(feed.lastChild);
-}
-
-// ═══════════════════════════════════
-// RED DE 100 IAs (CANVAS)
-// ═══════════════════════════════════
-const AI_AGENTS = [
-  'LLaMA-3','Mistral','Mixtral','Phi-3','Gemma','Falcon','DBRX','Command-R+',
-  'DeepSeek','Qwen','Yi-34B','StarCoder','CodeLlama','WizardLM','Vicuna',
-  'Orca2','OpenHermes','Zephyr','Starling','Openchat','TinyLlama','NeuralChat',
-  'Nous','SolarPro','Platypus','Airoboros','Synthia','Jackalope','Pygmalion',
-  'Samantha','MegaTron','Dolly','RedPajama','Bloom','FLAN-T5','GPT-NeoX',
-  'OPT-66B','Cerebras','MPT','Mosaic','Replit','WizardCoder','DeepCoder',
-  'TabNine','Codeium','SuperCOT','Alpaca','Baize','Guanaco','Koala',
-  'ChatGLM','InternLM','Baichuan','AquilaChat','TigerBot','LLaVA','MiniGPT4',
-  'InstructBLIP','Otter','CogVLM','Whisper','SeamlessM4T','NLLB','mBART','mT5',
-  'SDXL','Kandinsky','DeepFloyd','Würstchen','AltDiff','AudioCraft','MusicGen',
-  'Bark','VALL-E','VoiceBox','SAM','GroundDINO','YOLOv9','RT-DETR','EfficientSAM',
-  'ControlNet','IP-Adapt','DreamBooth','LoRA','TextInv','LangChain','LlamaIndex',
-  'Haystack','DSPy','SemKernel','AutoGPT','BabyAGI','CrewAI','MetaGPT','OpenDevin',
-  'AgentGPT','SuperAGI','Flowise','Dify','n8n-AI','Ollama','LM-Studio','GPT4All',
-  'Jan','Kobold',
-];
-const CHAIN_COLORS = {
-  ETH:'#a78bfa',SOL:'#00fff7',BNB:'#ffd700',POL:'#bf00ff',
-  ADA:'#3b82f6',ARB:'#f472b6',AVAX:'#fb923c',BTC:'#ff9100'
-};
-const CHAINS = Object.keys(CHAIN_COLORS);
-
-const cvs = document.getElementById('cvs');
-const ctx = cvs.getContext('2d');
-let W, H;
-
-function resize() {
-  const wrap = cvs.parentElement;
-  W = cvs.width = wrap.clientWidth;
-  H = cvs.height = wrap.clientHeight;
-  buildNodes();
-}
-
-let nodes = [], edges = [], particles = [];
-let tFrame = 0, tpsCount = 0, displayTps = 0;
-let lastTpsTime = Date.now();
-let hovNode = null;
-
-function buildNodes() {
-  nodes = AI_AGENTS.map((name, i) => ({
-    id: i, name,
-    chain: CHAINS[i % CHAINS.length],
-    color: Object.values(CHAIN_COLORS)[i % CHAINS.length],
-    x: 50 + Math.random()*(W-100),
-    y: 50 + Math.random()*(H-100),
-    vx: (Math.random()-.5)*.35,
-    vy: (Math.random()-.5)*.35,
-    r: 6 + Math.random()*5,
-    phase: Math.random()*Math.PI*2,
-    txCount: 0, pulse: 0,
-  }));
-  const used = new Set();
-  edges = [];
-  nodes.forEach(n => {
-    for(let k=0;k<4;k++){
-      const j = Math.floor(Math.random()*nodes.length);
-      if(j===n.id) continue;
-      const key = Math.min(n.id,j)+'-'+Math.max(n.id,j);
-      if(!used.has(key)){ used.add(key); edges.push([n.id,j]); }
-    }
-  });
-}
-
-let gt = 0;
-function loop() {
-  gt += .004;
-  ctx.clearRect(0,0,W,H);
-
-  // BG
-  const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.65);
-  bg.addColorStop(0,'rgba(0,18,18,.35)');
-  bg.addColorStop(1,'transparent');
-  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-
-  // Move nodes
-  nodes.forEach(n => {
-    n.x += n.vx + Math.sin(gt+n.phase)*.12;
-    n.y += n.vy + Math.cos(gt*.75+n.phase)*.1;
-    if(n.x<n.r){n.x=n.r;n.vx*=-1;}
-    if(n.x>W-n.r){n.x=W-n.r;n.vx*=-1;}
-    if(n.y<n.r){n.y=n.r;n.vy*=-1;}
-    if(n.y>H-n.r){n.y=H-n.r;n.vy*=-1;}
-    n.vx*=.996; n.vy*=.996;
-    n.pulse=Math.max(0,n.pulse-.025);
-  });
-
-  // Edges
-  edges.forEach(([a,b]) => {
-    const na=nodes[a],nb=nodes[b];
-    const hl = hovNode&&(hovNode.id===a||hovNode.id===b);
-    ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y);
-    ctx.strokeStyle = hl ? 'rgba(0,255,247,.3)' : 'rgba(0,255,247,.05)';
-    ctx.lineWidth = hl ? 1 : .4;
+  // 1. DIBUJAR RETÍCULA TECNOLÓGICA DE FONDO (Grid lines)
+  ctx.strokeStyle = 'rgba(10, 32, 53, 0.3)';
+  ctx.lineWidth = 0.5;
+  // Líneas horizontales
+  for (let i = 1; i < 4; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, (H / 4) * i);
+    ctx.lineTo(W, (H / 4) * i);
     ctx.stroke();
+  }
+  // Líneas verticales
+  for (let i = 1; i < 6; i++) {
+    ctx.beginPath();
+    ctx.moveTo((W / 6) * i, 0);
+    ctx.lineTo((W / 6) * i, H);
+    ctx.stroke();
+  }
+
+  // Mapeo de puntos
+  const points = data.map((v, i) => {
+    return {
+      x: (i / (data.length - 1)) * W,
+      y: H - ((v - min) / range) * H * 0.75 - H * 0.12 // Margen superior/inferior profesional
+    };
   });
 
-  // Particles
-  particles = particles.filter(p => {
-    p.progress += p.speed;
-    if(p.progress >= 1) return false;
-    const px = p.x+(p.tx-p.x)*p.progress;
-    const py = p.y+(p.ty-p.y)*p.progress;
-    ctx.beginPath(); ctx.arc(px,py,2,0,Math.PI*2);
-    ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=10;
-    ctx.fill(); ctx.shadowBlur=0;
-    return true;
-  });
+  // 2. GRADIENTE DE ÁREA DEBAJO DE LA LÍNEA
+  const areaGrad = ctx.createLinearGradient(0, 0, 0, H);
+  areaGrad.addColorStop(0, color + '33'); // Opacidad del 20% arriba
+  areaGrad.addColorStop(0.5, color + '0D'); // Opacidad del 5% al medio
+  areaGrad.addColorStop(1, 'transparent');   // Desvanecido total abajo
 
-  // Nodes
-  nodes.forEach(n => {
-    const hov = hovNode&&hovNode.id===n.id;
-    const r = (hov ? n.r+5 : n.r) * (1 + n.pulse*.5);
-    if(n.pulse>.05||hov){
-      ctx.beginPath(); ctx.arc(n.x,n.y,r*3.5,0,Math.PI*2);
-      ctx.fillStyle=n.color+'14'; ctx.fill();
-    }
-    const g=ctx.createRadialGradient(n.x-r*.3,n.y-r*.3,0,n.x,n.y,r);
-    g.addColorStop(0,'#cffffe'); g.addColorStop(.4,n.color); g.addColorStop(1,'rgba(0,12,15,.9)');
-    ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2);
-    ctx.fillStyle=g; ctx.fill();
-    ctx.strokeStyle=hov?'#fff':n.color; ctx.lineWidth=hov?1.6:.7;
-    ctx.shadowColor=n.color; ctx.shadowBlur=hov?20:8;
-    ctx.stroke(); ctx.shadowBlur=0;
-    if(hov||n.r>9){
-      ctx.font=`${hov?9:7}px 'Orbitron',monospace`;
-      ctx.fillStyle=hov?'#fff':'rgba(255,255,255,.5)';
-      ctx.textAlign='center';
-      ctx.fillText(n.name.substring(0,8), n.x, n.y+r+10);
+  ctx.beginPath();
+  ctx.moveTo(0, H);
+  points.forEach((p, i) => {
+    if (i === 0) ctx.lineTo(p.x, p.y);
+    else {
+      // Curvatura suave (Bezier) para evitar esquinas rígidas y dar fluidez líquida
+      const cpX = (points[i - 1].x + p.x) / 2;
+      ctx.bezierCurveTo(cpX, points[i - 1].y, cpX, p.y, p.x, p.y);
     }
   });
+  ctx.lineTo(W, H);
+  ctx.closePath();
+  ctx.fillStyle = areaGrad;
+  ctx.fill();
 
-  // TPS
-  tFrame++;
-  const now = Date.now();
-  if(now-lastTpsTime>=1000){
-    displayTps=tpsCount; tpsCount=0; lastTpsTime=now;
-    document.getElementById('s-tps').textContent=displayTps;
-    document.getElementById('s-lat').textContent=(8+Math.floor(Math.random()*14))+'ms';
-    animateChains();
-    updateLeaderboard();
-  }
-  if(tFrame%3===0) spawnSimTx();
+  // 3. EFECTO DE RESPLANDOR (GLOW) BAJO LA LÍNEA PRINCIPAL
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
 
-  requestAnimationFrame(loop);
-}
-
-function spawnSimTx() {
-  const from=nodes[Math.floor(Math.random()*nodes.length)];
-  const to=nodes[Math.floor(Math.random()*nodes.length)];
-  if(from.id===to.id) return;
-  from.pulse=1; from.txCount++; tpsCount++;
-  particles.push({
-    x:from.x,y:from.y,tx:to.x,ty:to.y,
-    progress:0, speed:.006+Math.random()*.012,
-    color: from.color,
+  // 4. LÍNEA DE TENDENCIA PRINCIPAL
+  ctx.beginPath();
+  points.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else {
+      const cpX = (points[i - 1].x + p.x) / 2;
+      ctx.bezierCurveTo(cpX, points[i - 1].y, cpX, p.y, p.x, p.y);
+    }
   });
-  // Add to feed occasionally
-  if(Math.random()<.06){
-    const amt = (Math.random()*9.9+.01).toFixed(4);
-    addTx({ agent:from.name, chain:from.chain, amount:amt+' '+from.chain, note:to.name });
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Desactivar sombra para que no afecte a otros elementos del renderizado
+  ctx.shadowBlur = 0;
+
+  // 5. PUNTO DE PRECIO ACTUAL (ÚLTIMO DATO) CON PULSACIÓN DE NEÓN
+  const lastP = points[points.length - 1];
+  
+  // Aura exterior semitransparente (Efecto radar)
+  ctx.beginPath();
+  ctx.arc(lastP.x - 3, lastP.y, 6, 0, Math.PI * 2);
+  ctx.fillStyle = color + '44';
+  ctx.fill();
+
+  // Núcleo sólido brillante
+  ctx.beginPath();
+  ctx.arc(lastP.x - 3, lastP.y, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff'; // Centro blanco para simular máxima intensidad luminosa
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.fill();
+  ctx.stroke();
+}
+    ctx.stroke();
   }
 }
-
-function animateChains(){
-  const TPS = {BTC:[5,9],ETH:[10,25],SOL:[50000,75000],POL:[5000,9000],BNB:[200,500],ADA:[180,320],ARB:[30000,60000],AVAX:[3000,6000]};
-  for(const [chain,[mn,mx]] of Object.entries(TPS)){
-    const v=mn+Math.random()*(mx-mn);
-    const pct=Math.min(100,(v/mx)*100);
-    const b=document.getElementById('b-'+chain);
-    const t=document.getElementById('t-'+chain);
-    if(b) b.style.width=pct+'%';
-    if(t) t.textContent=v>1000?(v/1000).toFixed(0)+'K':Math.floor(v);
-  }
-}
-
-function updateLeaderboard(){
-  const top=[...nodes].sort((a,b)=>b.txCount-a.txCount).slice(0,8);
-  document.getElementById('agentTop').innerHTML=top.map((n,i)=>
-    `<div style="display:flex;justify-content:space-between;padding:1px 0;border-bottom:1px solid rgba(0,255,247,.04)">
-      <span style="color:${n.color};font-size:7px;">${i+1}. ${n.name.substring(0,9)}</span>
-      <span style="color:var(--gold);font-size:7px;">${n.txCount}</span>
-    </div>`
-  ).join('');
-}
-
-// Hover
-cvs.addEventListener('mousemove',e=>{
-  const r=cvs.getBoundingClientRect();
-  const mx=e.clientX-r.left,my=e.clientY-r.top;
-  hovNode=null;
-  for(const n of nodes) if(Math.hypot(mx-n.x,my-n.y)<n.r+8){hovNode=n;break;}
-  const tip=document.getElementById('tip');
-  if(hovNode){
-    tip.style.display='block';
-    tip.style.left=(e.clientX+12)+'px';
-    tip.style.top=(e.clientY-8)+'px';
-    document.getElementById('tip-n').textContent=hovNode.name;
-    document.getElementById('tip-i').innerHTML=`<span style="color:${hovNode.color}">${hovNode.chain}</span> · TX: <span style="color:var(--gold)">${hovNode.txCount}</span>`;
-    cvs.style.cursor='pointer';
-  } else {
-    tip.style.display='none';
-    cvs.style.cursor='default';
-  }
-});
-cvs.addEventListener('mouseleave',()=>{
-  document.getElementById('tip').style.display='none';
-  hovNode=null;
-});
-
-// Enter key for AI
-document.getElementById('aiInput').addEventListener('keydown',e=>{ if(e.key==='Enter') sendAI(); });
-
-window.addEventListener('resize',resize);
-resize();
-loop();
-</script>
-</body>
-</html>
-<!-- CONEXIÓN OFICIAL CON EL CEREBRO SOCXIMA IA -->
-<script>
-function conectarEcosistema() {
-    const contenedorEstado = document.getElementById("estado_sistema");
-
-   fetch("http://127.0.0.1:5000/estado")
-     
-      
-      
-        .then(response => {
-            if (!response.ok) throw new Error("Sin conexión");
-            return response.json();
-        })
-        .then(datos => {
-            contenedorEstado.innerHTML = `<span style="color:#00ffcc; font-weight:bold;">${datos.estado}</span> | ${datos.core.system_id} v${datos.core.version}`;
-        })
-        .catch(() => {
-            contenedorEstado.innerHTML = `<span style="color:#ff3366; font-weight:bold;">🔴 SIN BACKEND</span>`;
-        });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    conectarEcosistema();
-    setInterval(conectarEcosistema, 10000);
-});
-</script>
+    
