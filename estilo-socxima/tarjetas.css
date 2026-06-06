@@ -1,0 +1,25 @@
+/* Modifica tu clase .mini-chart con este estilo cyberpunk refinado */
+.mini-chart {
+  background: linear-gradient(135deg, rgba(6, 15, 30, 0.7) 0%, rgba(4, 13, 24, 0.9) 100%);
+  border: 1px solid var(--border2);
+  padding: 12px 14px 6px;
+  height: 115px; /* Un poco más de aire para el gráfico */
+  position: relative;
+  backdrop-filter: blur(4px); /* Efecto Glassmorphism */
+  box-shadow: inset 0 0 15px rgba(0, 255, 231, 0.02);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.mini-chart:hover {
+  border-color: rgba(0, 255, 231, 0.4);
+  box-shadow: 0 0 20px rgba(0, 255, 231, 0.1), inset 0 0 15px rgba(0, 255, 231, 0.05);
+  transform: translateY(-2px);
+}
+
+.mc-price {
+  font-family: var(--orb);
+  font-size: 16px; /* Números más grandes y legibles */
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
