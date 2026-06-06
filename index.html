@@ -9,9 +9,9 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--c1:#00ffcc;--c2:#7b5ea7;--bg:#05050f;--surface:rgba(255,255,255,.03);--border:rgba(255,255,255,.07)}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:#fff;font-family:'Space Grotesk", sans-serif;overflow-x:hidden}
 canvas{position:fixed;inset:0;z-index:0;opacity:.5}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
+body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
 .wrap{position:relative;z-index:2}
 nav{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);position:sticky;top:0;background:rgba(5,5,15,.7);z-index:100}
 .nav-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(90deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -28,7 +28,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:24px 4
 .hero-title .filled{background:linear-gradient(135deg,#fff 20%,var(--c1) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-title .accent{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);font-weight:300;color:rgba(255,255,255,.45);letter-spacing:6px;text-transform:uppercase;margin-top:24px}
-.hero-ctas{display:flex;gap:14px;margin-top:48px;flex-wrap:wrap}
+.hero-ctas{display:flex;gap:14px;margin-top:48px;flex-wrap:wrap;justify-content:center}
 .btn-primary{background:linear-gradient(135deg,var(--c1),#00b8ff);color:#000;font-weight:700;padding:16px 36px;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,204,.25)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 50px rgba(0,255,204,.4)}
 .btn-ghost{background:var(--surface);border:1px solid var(--border);color:#fff;padding:16px 36px;border-radius:50px;text-decoration:none;transition:border-color .2s,transform .2s;backdrop-filter:blur(10px)}
@@ -43,35 +43,33 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:24px 4
 .stat-item:hover{background:rgba(0,255,204,.03)}
 .stat-number{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .stat-desc{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:10px}
-.features-section{padding:120px 40px;max-width:1100px;margin:0 auto}
+.section-full{padding:120px 40px;max-width:1100px;margin:0 auto}
+.section-center{text-align:center}
 .section-label{font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:20px}
-.section-heading{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;max-width:600px;margin-bottom:64px}
-.section-heading em{font-style:normal;background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 32px;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}
-.card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,255,204,0.06),transparent 70%);opacity:0;transition:opacity .3s}
-.card:hover{border-color:rgba(0,255,204,.3);transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.4)}
-.card:hover::after{opacity:1}
-.card-icon{width:52px;height:52px;border-radius:14px;background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:24px}
-.card-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:12px}
-.card-body{font-size:.88rem;line-height:1.75;color:rgba(255,255,255,.45)}
+.section-heading{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:64px}
+.ias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.ia-btn{background:var(--surface);border:1px solid var(--border);color:#fff;padding:18px 12px;border-radius:16px;text-decoration:none;font-weight:500;transition:all .3s;text-align:center}
+.ia-btn:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,255,204,.1)}
+.clouds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.cloud-card{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(123,94,167,.06));border:1px solid rgba(0,255,204,.2);border-radius:20px;padding:32px;text-align:center;text-decoration:none;transition:transform .3s}
+.cloud-card:hover{transform:scale(1.05)}
+.cloud-name{color:#fff;font-weight:700;margin-bottom:8px}
+.cloud-desc{color:rgba(255,255,255,.5);font-size:.8rem}
 .golden{max-width:800px;margin:0 auto;padding:0 24px 120px;text-align:center}
 .golden-inner{position:relative;background:linear-gradient(135deg,rgba(123,94,167,.12),rgba(0,255,204,.05));border:1px solid rgba(123,94,167,.3);border-radius:32px;padding:64px 48px;overflow:hidden}
-.golden-inner::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent)}
+.golden-inner::before{content:"";position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent)}
 .golden-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--c2);margin-bottom:20px}
 .golden-text{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;line-height:1.3}
 .golden-text .strike{color:rgba(255,107,107,.7);text-decoration:line-through}
 .golden-text .good{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .cta-strip{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(0,184,255,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px;text-align:center}
-.cta-strip h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:800;margin-bottom:12px}
-.cta-strip p{color:rgba(255,255,255,.4);font-size:.95rem;margin-bottom:36px;letter-spacing:1px}
 footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border-top:1px solid var(--border);text-align:center}
 .footer-logo{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;letter-spacing:4px;background:linear-gradient(135deg,#fff 30%,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .footer-sub{font-size:.72rem;letter-spacing:6px;text-transform:uppercase;color:rgba(0,255,204,.45);margin-top:4px}
 .footer-copy{font-size:.72rem;color:rgba(255,255,255,.2);letter-spacing:1px;margin-top:8px}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:640px){nav{padding:16px 20px}.features-section{padding:80px 20px}.golden-inner{padding:40px 24px}}
+@media(max-width:640px){nav{padding:16px 20px}.section-full{padding:80px 20px}.golden-inner{padding:40px 24px}}
 </style>
 </head>
 <body>
@@ -80,7 +78,8 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 <nav>
   <span class="nav-logo">SOCXIMA.IA</span>
   <ul class="nav-links">
-    <li><a href="#features">Características</a></li>
+    <li><a href="#ias">119 IAs</a></li>
+    <li><a href="#nubes">10 Nubes</a></li>
     <li><a href="#regla">Principios</a></li>
     <li><a href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">GitHub</a></li>
   </ul>
@@ -93,19 +92,17 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
     <span class="filled">SOCXIMA</span><span class="accent">.IA</span>
   </h1>
   <p class="hero-sub">El Nexo del Código Abierto</p>
+  
   <div class="hero-ctas">
-    <a class="btn-primary" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-    <a class="btn-ghost" href="#features">Explorar ↓</a>
+    <a class="btn-primary" href="#ias">ACCEDER A LAS IAS ⚡</a>
+    <a class="btn-ghost" href="#nubes">NUBES GRATUITAS ☁️</a>
   </div>
 </section>
 
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span>SOCXIMA.IA</span><span class="hl">⬡ OPEN SOURCE</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 119 IAS</span><span>10 NUBES LIBRES</span><span class="hl">⬡ 18X VELOCIDAD</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ SOLO EL BIEN</span>
-    <span>SOCXIMA.IA</span><span class="hl">⬡ OPEN SOURCE</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 119 IAS</span><span>10 NUBES LIBRES</span><span class="hl">⬡ 18X VELOCIDAD</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ SOLO EL BIEN</span>
+    <span>SOCXIMA.IA</span><span class="hl">⬡ 119 IAS UNIDAS</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 10 NUBES LIBRES</span><span>18X MÁS RÁPIDO</span><span class="hl">⬡ SOLO EL BIEN</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ LIBERTAD TOTAL</span>
+    <span>SOCXIMA.IA</span><span class="hl">⬡ 119 IAS UNIDAS</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 10 NUBES LIBRES</span><span>18X MÁS RÁPIDO</span><span class="hl">⬡ SOLO EL BIEN</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ LIBERTAD TOTAL</span>
   </div>
 </div>
 
@@ -116,16 +113,73 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
   <div class="stat-item reveal"><div class="stat-number">∞</div><div class="stat-desc">Código Abierto</div></div>
 </div>
 
-<section class="features-section" id="features">
-  <p class="section-label reveal">⬡ Características</p>
-  <h2 class="section-heading reveal">Tecnología diseñada para <em>el bien común</em></h2>
-  <div class="cards">
-    <div class="card reveal"><div class="card-icon">⚡</div><div class="card-title">Velocidad Extrema</div><div class="card-body">18 veces más rápido que Solana. Infraestructura para el futuro de las transacciones.</div></div>
-    <div class="card reveal"><div class="card-icon">☁️</div><div class="card-title">10 Nubes Gratuitas</div><div class="card-body">Red mundial libre y descentralizada, sin costos ni límites.</div></div>
-    <div class="card reveal"><div class="card-icon">🧠</div><div class="card-title">119 IAs Unidas</div><div class="card-body">Coordinadas y guiadas solo hacia el bien: saben todo, hacen el bien.</div></div>
-    <div class="card reveal"><div class="card-icon">🔓</div><div class="card-title">100% Open Source</div><div class="card-body">Todo el código público. Cualquiera puede auditarlo, mejorarlo y usarlo.</div></div>
-    <div class="card reveal"><div class="card-icon">🌐</div><div class="card-title">Nexo Global</div><div class="card-body">Une comunidades, proyectos y desarrolladores bajo un mismo fin.</div></div>
-    <div class="card reveal"><div class="card-icon">🛡️</div><div class="card-title">Ética por Diseño</div><div class="card-body">Regla de oro integrada: prohibido daño, armas, violencia o destrucción.</div></div>
+<section class="section-full section-center" id="ias">
+  <p class="section-label reveal">⬡ Inteligencias Unidas</p>
+  <h2 class="section-heading reveal">Acceso directo a las 119 IAs del Nexo</h2>
+  <div class="ias-grid">
+    <a href="https://chat.openai.com" target="_blank" class="ia-btn reveal">🤖 ChatGPT</a>
+    <a href="https://claude.ai" target="_blank" class="ia-btn reveal">📜 Claude</a>
+    <a href="https://gemini.google.com" target="_blank" class="ia-btn reveal">✨ Gemini</a>
+    <a href="https://www.llama-api.com" target="_blank" class="ia-btn reveal">🦙 Llama 3</a>
+    <a href="https://mistral.ai" target="_blank" class="ia-btn reveal">🌪️ Mistral</a>
+    <a href="https://www.perplexity.ai" target="_blank" class="ia-btn reveal">🔍 Perplexity</a>
+    <a href="https://grok.x.ai" target="_blank" class="ia-btn reveal">🤩 Grok</a>
+    <a href="https://www.qwen.ai" target="_blank" class="ia-btn reveal">📘 Qwen</a>
+    <a href="https://cohere.com/command" target="_blank" class="ia-btn reveal">⚡ Command</a>
+    <a href="https://ai.google.dev/edge/mediapipe" target="_blank" class="ia-btn reveal">🧠 MediaPipe</a>
+    <a href="https://huggingface.co/chat" target="_blank" class="ia-btn reveal">🤗 HuggingChat</a>
+    <a href="https://deepseek.com" target="_blank" class="ia-btn reveal">🔮 DeepSeek</a>
+    <a href="https://www.nvidia.com/en-us/ai/leonardo-ai/" target="_blank" class="ia-btn reveal">🎨 Leonardo</a>
+    <a href="https://runwayml.com" target="_blank" class="ia-btn reveal">🎬 Runway</a>
+    <a href="https://stability.ai" target="_blank" class="ia-btn reveal">🌌 Stable Diffusion</a>
+    <a href="https://lmsys.org" target="_blank" class="ia-btn reveal">⚖️ Arena</a>
+  </div>
+</section>
+
+<section class="section-full section-center" id="nubes">
+  <p class="section-label reveal">⬡ Red Mundial Libre</p>
+  <h2 class="section-heading reveal">10 Nubes Gratuitas y Descentralizadas</h2>
+  <div class="clouds-grid">
+    <a href="https://www.pythonanywhere.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">PythonAnywhere</div>
+      <div class="cloud-desc">Ejecuta código sin límites</div>
+    </a>
+    <a href="https://vercel.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Vercel</div>
+      <div class="cloud-desc">Hosting ultrarrápido</div>
+    </a>
+    <a href="https://www.netlify.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Netlify</div>
+      <div class="cloud-desc">Despliegue automático</div>
+    </a>
+    <a href="https://render.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Render</div>
+      <div class="cloud-desc">Servidores siempre activos</div>
+    </a>
+    <a href="https://fly.io" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Fly.io</div>
+      <div class="cloud-desc">Global y gratuito</div>
+    </a>
+    <a href="https://github.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">GitHub</div>
+      <div class="cloud-desc">Repositorio ilimitado</div>
+    </a>
+    <a href="https://supabase.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Supabase</div>
+      <div class="cloud-desc">Base de datos libre</div>
+    </a>
+    <a href="https://firebase.google.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Firebase</div>
+      <div class="cloud-desc">Escalabilidad infinita</div>
+    </a>
+    <a href="https://railway.app" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Railway</div>
+      <div class="cloud-desc">Todo en la nube</div>
+    </a>
+    <a href="https://cloudflare.com" target="_blank" class="cloud-card reveal">
+      <div class="cloud-name">Cloudflare</div>
+      <div class="cloud-desc">Seguridad y velocidad</div>
+    </a>
   </div>
 </section>
 
@@ -143,7 +197,7 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 <div class="cta-strip">
   <h2 class="reveal">Explora el código.<br>Únete al nexo.</h2>
   <p class="reveal">Creado por Evelio Llovera · 2026</p>
-  <a class="btn-primary reveal" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">Ver en GitHub</a>
+  <a class="btn-primary reveal" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank">Ver todo en GitHub</a>
 </div>
 
 <footer>
