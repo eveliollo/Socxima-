@@ -12,7 +12,7 @@ tasks.register<Copy>("deployToGitHubPages") {
     dependsOn("cleanLegacyDeploy")
     
     // Extrae directamente del build optimizado para producción
-    from(layout.buildDirectory.dir("distributions/productionExecutable"))
+    from(layout.buildDirectory.dir("web"))
     into(rootDir)
     
     // Compresión sobre la marcha para carga instantánea en web
