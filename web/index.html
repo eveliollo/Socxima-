@@ -621,3 +621,26 @@ loop();
 </script>
 </body>
 </html>
+<!-- CONEXIÓN OFICIAL CON EL CEREBRO SOCXIMA IA -->
+<script>
+function conectarEcosistema() {
+    const contenedorEstado = document.getElementById("estado_sistema");
+
+    fetch("http://localhost:5000/estado")
+        .then(response => {
+            if (!response.ok) throw new Error("Sin conexión");
+            return response.json();
+        })
+        .then(datos => {
+            contenedorEstado.innerHTML = `<span style="color:#00ffcc; font-weight:bold;">${datos.estado}</span> | ${datos.core.system_id} v${datos.core.version}`;
+        })
+        .catch(() => {
+            contenedorEstado.innerHTML = `<span style="color:#ff3366; font-weight:bold;">🔴 SIN BACKEND</span>`;
+        });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    conectarEcosistema();
+    setInterval(conectarEcosistema, 10000);
+});
+</script>
