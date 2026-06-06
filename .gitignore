@@ -14,5 +14,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Protege archivos SOCXIMA
 .env
+.env.*
 debug.keystore
+debug.keystore.base64
+.build-outputs/
+dist/
+*.js
+*.wasm
+__pycache__/
