@@ -2,74 +2,82 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SOCXIMA.IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--c1:#00ffcc;--c2:#7b5ea7;--bg:#05050f;--surface:rgba(255,255,255,.03);--border:rgba(255,255,255,.07)}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:#fff;font-family:'Space Grotesk', sans-serif;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--c1:#00ffcc;--block:#25e8c8;--c2:#7b5ea7;--bg:#05050f;--surface:rgba(255,255,255,.03);--border:rgba(255,255,255,.07);--chain-glow:rgba(0,255,204,0.15)}
+html{scroll-behavior:smooth;height:100%}
+body{background:var(--bg);color:#fff;font-family:'Space Grotesk', sans-serif;overflow-x:hidden;min-height:100%}
 canvas{position:fixed;inset:0;z-index:0;opacity:.5;pointer-events:none}
 body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
-.wrap{position:relative;z-index:10}
-nav{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);position:sticky;top:0;background:rgba(5,5,15,.7);z-index:20}
+.wrap{position:relative;z-index:10;width:100%}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:sticky;top:0;background:rgba(5,5,15,.75);z-index:20;flex-wrap:wrap;gap:12px}
 .nav-logo{font-family:'Syne', sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:2px;background:linear-gradient(90deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.85rem;transition:color .2s;position:relative;z-index:30}
-.nav-links a:hover{color:var(--c1)}
-.nav-btn{background:linear-gradient(135deg,var(--c1),#00b894);color:#000;font-weight:700;padding:10px 22px;border-radius:50px;text-decoration:none;transition:transform .2s;position:relative;z-index:30}
-.nav-btn:hover{transform:scale(1.04)}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px}
+.nav-links{display:flex;gap:20px;list-style:none;flex-wrap:wrap;justify-content:center;width:100%;order:3}
+.nav-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.85rem;transition:color .2s;position:relative;z-index:30;padding:6px 0}
+.nav-links a:hover,.nav-links a:active{color:var(--c1)}
+.nav-buttons{display:flex;gap:10px;align-items:center}
+.nav-btn{background:linear-gradient(135deg,var(--c1),#00b894);color:#000;font-weight:700;padding:10px 20px;border-radius:50px;text-decoration:none;transition:transform .2s;position:relative;z-index:30;font-size:.85rem}
+.nav-btn:hover,.nav-btn:active{transform:scale(1.04)}
+.download-page{background:linear-gradient(135deg,#00b8ff,var(--c1));color:#000;font-weight:700;padding:10px 20px;border-radius:50px;text-decoration:none;transition:transform .2s;position:relative;z-index:30;box-shadow:0 0 18px rgba(0,255,204,.25);font-size:.85rem}
+.download-page:hover,.download-page:active{transform:scale(1.05);box-shadow:0 0 30px rgba(0,255,204,.5)}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px}
 .hero-eyebrow{display:inline-flex;gap:8px;background:rgba(0,255,204,.07);border:1px solid rgba(0,255,204,.2);border-radius:50px;padding:8px 18px;font-size:.75rem;color:var(--c1);text-transform:uppercase}
 .pulse{width:6px;height:6px;border-radius:50%;background:var(--c1);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,204,.6)}50%{opacity:.4;box-shadow:0 0 0 6px rgba(0,255,204,0)}}
-.hero-title{font-family:'Syne', sans-serif;font-size:clamp(2.4rem,10vw,8rem);font-weight:800;line-height:.95}
+.hero-title{font-family:'Syne', sans-serif;font-size:clamp(2.4rem,12vw,7rem);font-weight:800;line-height:.95}
 .hero-title .filled{background:linear-gradient(135deg,#fff 20%,var(--c1) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-title .accent{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);font-weight:300;color:rgba(255,255,255,.45);letter-spacing:6px;text-transform:uppercase;margin-top:24px}
-.hero-ctas{display:flex;gap:14px;margin-top:48px;flex-wrap:wrap;justify-content:center}
-.btn-primary{background:linear-gradient(135deg,var(--c1),#00b8ff);color:#000;font-weight:700;padding:16px 36px;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,204,.25);position:relative;z-index:30}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 50px rgba(0,255,204,.4)}
-.btn-ghost{background:var(--surface);border:1px solid var(--border);color:#fff;padding:16px 36px;border-radius:50px;text-decoration:none;transition:border-color .2s,transform .2s;backdrop-filter:blur(10px);position:relative;z-index:30}
-.btn-ghost:hover{border-color:rgba(255,255,255,.3);transform:translateY(-3px)}
-.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:rgba(0,255,204,.02)}
-.marquee-track{display:flex;gap:60px;animation:marquee 20s linear infinite;white-space:nowrap;width:max-content}
-.marquee-track span{font-family:'Syne', sans-serif;font-size:.8rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2)}
-.marquee-track span.hl{color:var(--c1);opacity:.7}
+.hero-sub{font-size:clamp(1rem,3vw,1.3rem);font-weight:300;color:rgba(255,255,255,.45);letter-spacing:4px;text-transform:uppercase;margin-top:20px}
+.hero-ctas{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn-primary{background:linear-gradient(135deg,var(--c1),#00b8ff);color:#000;font-weight:700;padding:15px 32px;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,204,.25);position:relative;z-index:30;font-size:.95rem}
+.btn-primary:hover,.btn-primary:active{transform:translateY(-3px);box-shadow:0 8px 50px rgba(0,255,204,.4)}
+.btn-ghost{background:var(--surface);border:1px solid var(--border);color:#fff;padding:15px 32px;border-radius:50px;text-decoration:none;transition:border-color .2s,transform .2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:relative;z-index:30;font-size:.95rem}
+.btn-ghost:hover,.btn-ghost:active{border-color:rgba(255,255,255,.3);transform:translateY(-3px)}
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;background:rgba(0,255,204,.02)}
+.marquee-track{display:flex;gap:50px;animation:marquee 15s linear infinite;white-space:nowrap;width:max-content}
+.marquee-track span{font-family:'Syne', sans-serif;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.marquee-track span.hl{color:var(--c1);opacity:.75}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.stat-item{background:var(--bg);padding:48px 32px;text-align:center;transition:background .3s}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat-item{background:var(--bg);padding:32px 16px;text-align:center;transition:background .3s}
 .stat-item:hover{background:rgba(0,255,204,.03)}
-.stat-number{font-family:'Syne', sans-serif;font-size:3.5rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat-desc{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:10px}
-.section-full{padding:120px 40px;max-width:1100px;margin:0 auto}
+.stat-number{font-family:'Syne', sans-serif;font-size:3rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-desc{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:8px}
+.section-full{padding:80px 20px;max-width:1100px;margin:0 auto;width:100%}
 .section-center{text-align:center}
-.section-label{font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:20px}
-.section-heading{font-family:'Syne', sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:64px}
-.ias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
-.ia-btn{background:var(--surface);border:1px solid var(--border);color:#fff;padding:18px 12px;border-radius:16px;text-decoration:none;font-weight:500;transition:all .3s;text-align:center;position:relative;z-index:30}
-.ia-btn:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,255,204,.1)}
-.clouds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
-.cloud-card{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(123,94,167,.06));border:1px solid rgba(0,255,204,.2);border-radius:20px;padding:32px;text-align:center;text-decoration:none;transition:transform .3s;position:relative;z-index:30}
-.cloud-card:hover{transform:scale(1.05)}
-.cloud-name{color:#fff;font-weight:700;margin-bottom:8px}
-.cloud-desc{color:rgba(255,255,255,.5);font-size:.8rem}
-.golden{max-width:800px;margin:0 auto;padding:0 24px 120px;text-align:center}
-.golden-inner{position:relative;background:linear-gradient(135deg,rgba(123,94,167,.12),rgba(0,255,204,.05));border:1px solid rgba(123,94,167,.3);border-radius:32px;padding:64px 48px;overflow:hidden}
+.section-label{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--c1);margin-bottom:16px}
+.section-heading{font-family:'Syne', sans-serif;font-size:clamp(1.8rem,6vw,3rem);font-weight:800;line-height:1.1;margin-bottom:48px}
+.ias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;position:relative}
+.ia-btn{background:var(--surface);border:1px solid var(--border);color:#fff;padding:16px 10px;border-radius:14px;text-decoration:none;font-weight:500;transition:all .3s;text-align:center;position:relative;z-index:30;overflow:hidden;border-left:3px solid var(--block);box-shadow:0 0 12px var(--chain-glow);font-size:.85rem}
+.ia-btn::before{content:"⛓️";position:absolute;left:-10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.8}
+.ia-btn:hover,.ia-btn:active{border-color:var(--c1);color:var(--c1);transform:translateY(-3px) scale(1.02);box-shadow:0 12px 25px rgba(0,255,204,.25), 0 0 20px var(--chain-glow)}
+.ia-btn::after{content:"";position:absolute;top:50%;right:-16px;width:16px;height:2px;background:linear-gradient(90deg,var(--block),transparent);animation:chainFlow 1.2s infinite alternate}
+@keyframes chainFlow{0%{opacity:.4;width:8px}100%{opacity:1;width:22px}}
+.sync-status{grid-column:1 / -1;padding:12px;background:rgba(0,255,204,0.08);border:1px solid var(--block);border-radius:12px;color:var(--c1);font-size:.8rem;letter-spacing:1px;animation:pulse-light 2s infinite;box-shadow:0 0 15px var(--chain-glow)}
+@keyframes pulse-light{0%,100%{opacity:.7}50%{opacity:1}}
+.clouds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.cloud-card{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(123,94,167,.06));border:1px solid rgba(0,255,204,.2);border-radius:18px;padding:24px 16px;text-align:center;text-decoration:none;transition:transform .3s;position:relative;z-index:30;border-top:2px solid var(--block)}
+.cloud-card:hover,.cloud-card:active{transform:scale(1.04);box-shadow:0 0 25px var(--chain-glow)}
+.cloud-name{color:#fff;font-weight:700;margin-bottom:6px;font-size:.9rem}
+.cloud-desc{color:rgba(255,255,255,.5);font-size:.75rem}
+.golden{max-width:800px;margin:0 auto;padding:0 20px 80px;text-align:center}
+.golden-inner{position:relative;background:linear-gradient(135deg,rgba(123,94,167,.12),rgba(0,255,204,.05));border:1px solid rgba(123,94,167,.3);border-radius:28px;padding:48px 24px;overflow:hidden;border-top:2px solid var(--block);box-shadow:inset 0 0 30px var(--chain-glow)}
 .golden-inner::before{content:"";position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent)}
-.golden-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--c2);margin-bottom:20px}
-.golden-text{font-family:'Syne', sans-serif;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;line-height:1.3}
+.golden-tag{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--c2);margin-bottom:16px}
+.golden-text{font-family:'Syne', sans-serif;font-size:clamp(1.3rem,5vw,2rem);font-weight:800;line-height:1.3}
 .golden-text .strike{color:rgba(255,107,107,.7);text-decoration:line-through}
 .golden-text .good{background:linear-gradient(135deg,var(--c1),#00b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.cta-strip{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(0,184,255,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px;text-align:center}
-footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border-top:1px solid var(--border);text-align:center}
-.footer-logo{font-family:'Syne', sans-serif;font-size:2.8rem;font-weight:800;letter-spacing:4px;background:linear-gradient(135deg,#fff 30%,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.footer-sub{font-size:.72rem;letter-spacing:6px;text-transform:uppercase;color:rgba(0,255,204,.45);margin-top:4px}
-.footer-copy{font-size:.72rem;color:rgba(255,255,255,.2);letter-spacing:1px;margin-top:8px}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.cta-strip{background:linear-gradient(135deg,rgba(0,255,204,.06),rgba(0,184,255,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px 20px;text-align:center}
+footer{padding:40px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-top:1px solid var(--border);text-align:center}
+.footer-logo{font-family:'Syne', sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:3px;background:linear-gradient(135deg,#fff 30%,var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.footer-sub{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:rgba(0,255,204,.45);margin-top:4px}
+.footer-copy{font-size:.7rem;color:rgba(255,255,255,.2);letter-spacing:1px;margin-top:6px}
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:640px){nav{padding:16px 20px}.section-full{padding:80px 20px}.golden-inner{padding:40px 24px}}
+@media(min-width:768px){nav{flex-wrap:nowrap}.nav-links{width:auto;order:unset}.hero-ctas{flex-wrap:nowrap}}
 </style>
 </head>
 <body>
@@ -78,45 +86,49 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 <nav>
   <span class="nav-logo">SOCXIMA.IA</span>
   <ul class="nav-links">
-    <li><a href="#ias" target="_self">119 IAs</a></li>
-    <li><a href="#nubes" target="_self">10 Nubes</a></li>
-    <li><a href="#regla" target="_self">Principios</a></li>
+    <li><a href="#ias">119 IAs</a></li>
+    <li><a href="#nubes">10 Nubes</a></li>
+    <li><a href="#regla">Regla</a></li>
     <li><a href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank" rel="noopener noreferrer">GitHub</a></li>
   </ul>
-  <a class="nav-btn" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank" rel="noopener noreferrer">Ver Código ↗</a>
+  <div class="nav-buttons">
+    <a class="nav-btn" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank" rel="noopener noreferrer">Ver ↗</a>
+    <a class="download-page" href="data:text/html;charset=utf-8,${encodeURIComponent(document.documentElement.outerHTML)}" download="SOCXIMA.IA-Pagina-Completa.html">📥 Descargar</a>
+  </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow"><span class="pulse"></span>Código Abierto · Open Source · 2026</div>
+  <div class="hero-eyebrow"><span class="pulse"></span>BLOCKCHAIN · RED UNIDA · ANDROID ✔️</div>
   <h1 class="hero-title">
     <span class="filled">SOCXIMA</span><span class="accent">.IA</span>
   </h1>
-  <p class="hero-sub">El Nexo del Código Abierto</p>
+  <p class="hero-sub">Cadena activa · Inteligencia Conectada</p>
   
   <div class="hero-ctas">
-    <a class="btn-primary" href="#ias" target="_self">ACCEDER A LAS IAS ⚡</a>
-    <a class="btn-ghost" href="#nubes" target="_self">NUBES GRATUITAS ☁️</a>
+    <a class="btn-primary" href="#ias">RED SINCRONIZADA ⛓️</a>
+    <a class="btn-ghost" href="#nubes">NUBES COMPARTIDAS ☁️</a>
   </div>
 </section>
 
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span>SOCXIMA.IA</span><span class="hl">⬡ 119 IAS UNIDAS</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 10 NUBES LIBRES</span><span>18X MÁS RÁPIDO</span><span class="hl">⬡ SOLO EL BIEN</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ LIBERTAD TOTAL</span>
-    <span>SOCXIMA.IA</span><span class="hl">⬡ 119 IAS UNIDAS</span><span>EVELIO LLOVERA</span><span class="hl">⬡ 10 NUBES LIBRES</span><span>18X MÁS RÁPIDO</span><span class="hl">⬡ SOLO EL BIEN</span><span>CÓDIGO ABIERTO</span><span class="hl">⬡ LIBERTAD TOTAL</span>
+    <span>SOCXIMA.IA</span><span class="hl">⛓️ CADENA BLOQUEADA Y SEGURA</span><span>EVELIO LLOVERA</span><span class="hl">📱 100% COMPATIBLE CON ANDROID</span><span>TRABAJO CONJUNTO</span><span class="hl">⚡ POTENCIA 18X MAYOR</span><span>RED GLOBAL</span><span class="hl">✅ DESCARGA DIRECTA</span>
+    <span>SOCXIMA.IA</span><span class="hl">⛓️ CADENA BLOQUEADA Y SEGURA</span><span>EVELIO LLOVERA</span><span class="hl">📱 100% COMPATIBLE CON ANDROID</span><span>TRABAJO CONJUNTO</span><span class="hl">⚡ POTENCIA 18X MAYOR</span><span>RED GLOBAL</span><span class="hl">✅ DESCARGA DIRECTA</span>
   </div>
 </div>
 
 <div class="stats">
-  <div class="stat-item reveal"><div class="stat-number">18×</div><div class="stat-desc">Más rápido que Solana</div></div>
-  <div class="stat-item reveal"><div class="stat-number">10</div><div class="stat-desc">Nubes Gratuitas</div></div>
-  <div class="stat-item reveal"><div class="stat-number">119</div><div class="stat-desc">IAs Unidas</div></div>
-  <div class="stat-item reveal"><div class="stat-number">∞</div><div class="stat-desc">Código Abierto</div></div>
+  <div class="stat-item reveal"><div class="stat-number">18×</div><div class="stat-desc">Fuerza al trabajar unidas</div></div>
+  <div class="stat-item reveal"><div class="stat-number">10</div><div class="stat-desc">Nubes en cadena</div></div>
+  <div class="stat-item reveal"><div class="stat-number">119</div><div class="stat-desc">Bloques de IA sincronizados</div></div>
+  <div class="stat-item reveal"><div class="stat-number">📱</div><div class="stat-desc">Android · PC · Móvil</div></div>
 </div>
 
 <section class="section-full section-center" id="ias">
-  <p class="section-label reveal">⬡ Inteligencias Unidas</p>
-  <h2 class="section-heading reveal">Acceso directo a las 119 IAs del Nexo</h2>
+  <p class="section-label reveal">⬡ Blockchain Operativa</p>
+  <h2 class="section-heading reveal">Cada IA es un bloque conectado en tu red</h2>
   <div class="ias-grid">
+    <div class="sync-status reveal">⛓️ SINCRONIZACIÓN · FLUJO DE DATOS · CADENA INALTERABLE · RED ACTIVA 24/7</div>
     <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" class="ia-btn reveal">🤖 ChatGPT</a>
     <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" class="ia-btn reveal">📜 Claude</a>
     <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="ia-btn reveal">✨ Gemini</a>
@@ -137,36 +149,37 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 </section>
 
 <section class="section-full section-center" id="nubes">
-  <p class="section-label reveal">⬡ Red Mundial Libre</p>
-  <h2 class="section-heading reveal">10 Nubes Gratuitas y Descentralizadas</h2>
-  <div class="clouds-grid">
+  <p class="section-label reveal">⬡ Red Mundial Descentralizada</p>
+  <h2 class="section-heading reveal">Nubes que refuerzan tu cadena Blockchain</h2>
+  <div class="ias-grid">
+    <div class="sync-status reveal">☁️ RECURSOS COMPARTIDOS · ALMACENAMIENTO SEGURO · VELOCIDAD SIN LÍMITES</div>
     <a href="https://www.pythonanywhere.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">PythonAnywhere</div>
-      <div class="cloud-desc">Ejecuta código sin límites</div>
+      <div class="cloud-desc">Nodo de ejecución</div>
     </a>
     <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Vercel</div>
-      <div class="cloud-desc">Hosting ultrarrápido</div>
+      <div class="cloud-desc">Velocidad de red</div>
     </a>
     <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Netlify</div>
-      <div class="cloud-desc">Despliegue automático</div>
+      <div class="cloud-desc">Despliegue seguro</div>
     </a>
     <a href="https://render.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Render</div>
-      <div class="cloud-desc">Servidores siempre activos</div>
+      <div class="cloud-desc">Nodo estable</div>
     </a>
     <a href="https://fly.io" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Fly.io</div>
-      <div class="cloud-desc">Global y gratuito</div>
+      <div class="cloud-desc">Cobertura global</div>
     </a>
     <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">GitHub</div>
-      <div class="cloud-desc">Repositorio ilimitado</div>
+      <div class="cloud-desc">Registro inmutable</div>
     </a>
     <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Supabase</div>
-      <div class="cloud-desc">Base de datos libre</div>
+      <div class="cloud-desc">Base de datos en cadena</div>
     </a>
     <a href="https://firebase.google.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Firebase</div>
@@ -174,36 +187,36 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
     </a>
     <a href="https://railway.app" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Railway</div>
-      <div class="cloud-desc">Todo en la nube</div>
+      <div class="cloud-desc">Potencia distribuida</div>
     </a>
     <a href="https://cloudflare.com" target="_blank" rel="noopener noreferrer" class="cloud-card reveal">
       <div class="cloud-name">Cloudflare</div>
-      <div class="cloud-desc">Seguridad y velocidad</div>
+      <div class="cloud-desc">Seguridad perimetral</div>
     </a>
   </div>
 </section>
 
 <div class="golden" id="regla">
   <div class="golden-inner reveal">
-    <p class="golden-tag">⬡ Regla de Oro</p>
+    <p class="golden-tag">⬡ Regla de Oro del Sistema</p>
     <h2 class="golden-text">
-      <span class="strike">Daño. Armas. Destrucción.</span><br>
-      Solo existe una ley:<br>
-      <span class="good">Hacer el bien.</span>
+      <span class="strike">Aislarse. Competir. Romper.</span><br>
+      Tu Blockchain une todo:<br>
+      <span class="good">TRABAJAR JUNTOS CREA PODER.</span>
     </h2>
   </div>
 </div>
 
 <div class="cta-strip">
-  <h2 class="reveal">Explora el código.<br>Únete al nexo.</h2>
-  <p class="reveal">Creado por Evelio Llovera · 2026</p>
-  <a class="btn-primary reveal" href="https://github.com/eveliollo/SOCXIMA.IA" target="_blank" rel="noopener noreferrer">Ver todo en GitHub</a>
+  <h2 class="reveal">Sistema completo y listo.</h2>
+  <p class="reveal">Funciona en Android · PC · Móvil · Descarga directa incluida</p>
+  <a class="btn-primary reveal download-page" href="data:text/html;charset=utf-8,${encodeURIComponent(document.documentElement.outerHTML)}" download="SOCXIMA.IA-Pagina-Completa.html">📥 DESCARGAR PÁGINA</a>
 </div>
 
 <footer>
   <div class="footer-logo">SOCXIMA.IA</div>
-  <div class="footer-sub">El Nexo del Código Abierto</div>
-  <div class="footer-copy">© 2026 Evelio Llovera · Todos los derechos reservados</div>
+  <div class="footer-sub">Tu Blockchain · Tu Red · Tu Inteligencia</div>
+  <div class="footer-copy">© 2026 Evelio Llovera · Código Abierto</div>
 </footer>
 </div>
 
@@ -211,19 +224,72 @@ footer{padding:60px 40px;display:flex;flex-direction:column;align-items:center;j
 const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
 let W,H,particles=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-function Particle(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*1.5+.5;this.a=Math.random()*.5+.1}
-function init(){resize();particles=Array.from({length:120},()=>new Particle())}
+
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+}
+
+function Particle(){
+  this.x=Math.random()*W;
+  this.y=Math.random()*H;
+  this.vx=(Math.random()-.5)*.3;
+  this.vy=(Math.random()-.5)*.3;
+  this.r=Math.random()*1.5+.5;
+  this.a=Math.random()*.5+.1;
+}
+
+function init(){
+  resize();
+  particles=Array.from({length:120},()=>new Particle());
+}
+
 function draw(){
   ctx.clearRect(0,0,W,H);
-  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,255,204,${p.a})`;ctx.fill()});
-  for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x;const dy=particles[i].y-particles[j].y;const d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,255,204,${.15*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}}}
-  requestAnimationFrame(draw)
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,255,204,${p.a})`;
+    ctx.fill();
+  });
+
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const distancia=Math.sqrt(dx*dx+dy*dy);
+      if(distancia<150){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(0,255,204,${0.2*(1-distancia/150)})`;
+        ctx.lineWidth=.6;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(draw);
 }
+
 window.addEventListener('resize',resize);
 init();draw();
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.15});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });w
+},{threshold:.15});
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
+
+
