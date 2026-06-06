@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOCXIMA IA 9.9.9 - GOLDEN</title>
-    <!-- RUTA PERFECTA DENTRO DE SOCXIMA -->
-    <link rel="stylesheet" href="SOCXIMA/estilo-socxima/tarjetas.css">
-</head>
-<body>
-
-    <h1>SOCXIMA IA · ANÁLISIS INTELIGENTE</h1>
-
-    <div class="tarjeta">
-        <canvas id="grafico1" width="400" height="170"></canvas>
-    </div>
-
-    <script src="SOCXIMA/graficos.js"></script>
-    <script>
-        drawSparkline('grafico1', [10, 22, 18, 30, 24, 40, 33, 48], '#00fff7');
-    </script>
-
-</body>
-</html>
+<!-- Busca el div que envuelve la gráfica y asegúrate de que tenga límites -->
+<div id="contenedor-grafica" style="width: 100%; max-width: 600px; height: 300px; margin: 0 auto;">
+    <canvas id="miGrafica"></canvas> 
+    <!-- o <svg>, dependiendo de lo que uses -->
+</div>
