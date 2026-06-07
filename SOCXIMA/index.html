@@ -1,7 +1,48 @@
-<div id="seccion-chat" style="background: #121212; padding: 15px; border-radius: 8px; margin-top: 20px;">
-    <h3>Asistente de IA Copiloto</h3>
-    <div id="chat-output" style="height: 200px; overflow-y: auto; border: 1px solid #333; padding: 10px; background: #000; margin-bottom: 10px; border-radius: 4px;">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCXIMA IA - Multichain Ecosystem</title>
+    <link rel="stylesheet" href="estilo-socxima/tarjetas.css">
+</head>
+<body>
+
+    <h1 style="color: #fff;">SOCXIMA <span style="color: #00ffcc;">IA</span></h1>
+
+    <div class="socxima-container">
+        
+        <div class="tarjeta-modulo">
+            <h3>Controlador de Billeteras Real</h3>
+            <div id="wallet-actions">
+                <button class="btn-wallet btn-eth" onclick="conectarMetaMask()">Conectar MetaMask (ETH)</button>
+                <button class="btn-wallet btn-sol" onclick="conectarPhantom()">Conectar Phantom (SOL)</button>
+            </div>
+            
+            <div id="telemetria-real" style="margin-top: 20px;">
+                <p><b>Wallet EVM:</b></p>
+                <div class="wallet-status" id="address-evm">Ninguna</div>
+                <p><b>Wallet Solana:</b></p>
+                <div class="wallet-status" id="address-solana">Ninguna</div>
+            </div>
+            
+            <div id="contenedor-graficas" style="margin-top: 20px;"></div>
         </div>
-    <input type="text" id="input-mensaje-usuario" placeholder="Pregúntale a SOCXIMA IA sobre tus saldos..." style="width: 75%; padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-    <button onclick="enviarMensajeAI()" style="padding: 8px 15px; background: #00ffcc; color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Enviar</button>
-</div>
+
+        <div class="tarjeta-modulo">
+            <h3>SOCXIMA IA Copilot Chat</h3>
+            <div class="chat-window" id="chat-output">
+                <p class="chat-bubble-ia">Sistema inicializado de forma segura. Conecta tus llaves públicas para comenzar el análisis financiero multired.</p>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <input type="text" class="chat-input-text" id="input-mensaje-usuario" placeholder="Pregúntale a la IA...">
+                <button class="btn-enviar" onclick="enviarMensajeAI()">Enviar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../socxima-controller.js"></script>
+    <script src="graficos.js"></script>
+</body>
+</html>
