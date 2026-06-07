@@ -1,41 +1,43 @@
-// Función real para procesar el chat con Inteligencia Artificial
+// Función para enviar la billetera y la pregunta al servidor de Pydroid 3
 async function enviarMensajeAI() {
     const inputChat = document.getElementById("input-mensaje-usuario");
-    const outputChat = document.getElementById("chat-output"); // El contenedor donde se muestran los textos
+    const outputChat = document.getElementById("chat-output");
     
     if (!inputChat || !inputChat.value.trim()) return;
     
     const mensaje = inputChat.value;
-    console.log("Enviando mensaje a SOCXIMA IA:", mensaje);
     
-    // Obtener las billeteras que están guardadas en la pantalla del HTML
-    const ethAddr = document.getElementById('address-evm')?.innerText || "";
-    const solAddr = document.getElementById('address-solana')?.innerText || "";
+    // Captura la dirección si el usuario generó una llave
+    const ethAddr = document.getElementById('pub-address')?.innerText || "0x0";
     
-    // Limpiar el input de la pantalla para simular fluidez
+    // Limpiar input y pintar mensaje del usuario en la pantalla
     inputChat.value = "";
-    if (outputChat) outputChat.innerHTML += `<p><b>Tú:</b> ${mensaje}</p>`;
+    if (outputChat) {
+        outputChat.innerHTML += `<div class="chat-bubble-user"><b>Tú:</b> ${mensaje}</div>`;
+    }
 
     try {
-        const respuesta = await fetch("http://localhost:8000/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                eth_address: ethAddr === "Ninguna" ? "" : ethAddr,
-                sol_address: solAddr === "Ninguna" ? "" : solAddr,
-                mensaje_usuario: mensaje
-            })
-        });
-
-        const data = await respuesta.json();
+        // Petición HTTP directa al puerto 8000 de tu servidor en el teléfono
+        const urlAPI = `http://127.0.0.1:8000/api/v1/procesar?wallet=${ethAddr}&pregunta=${encodeURIComponent(mensaje)}`;
         
+        const respuesta = await fetch(urlAPI);
+        const data = await respuesta.json();
+
+        // Pintar la respuesta inteligente que devolvió Gemini
         if (outputChat) {
-            outputChat.innerHTML += `<p style="color: #00ffcc;"><b>SOCXIMA IA:</b> ${data.respuesta}</p>`;
-            // Auto-scrollear hacia abajo en el chat
-            outputChat.scrollTop = outputChat.scrollHeight;
+            outputChat.innerHTML += `<div class="chat-bubble-ia"><b>SOCXIMA IA:</b> ${data.output_ia}</div>`;
+            outputChat.scrollTop = outputChat.scrollHeight; // Auto-scroll al fondo
         }
+
+        // Si la blockchain devolvió un balance real, actualizamos la gráfica
+        if (data.blockchain && data.blockchain.balance !== undefined) {
+            renderizarGraficoBalance("ETH", data.blockchain.balance);
+        }
+
     } catch (error) {
-        console.error("Error conectando con el módulo de IA:", error);
-        if (outputChat) outputChat.innerHTML += `<p style="color: red;"><i>Error de conexión con el motor de IA.</i></p>`;
+        console.error("Error conectando con el servidor Pydroid:", error);
+        if (outputChat) {
+            outputChat.innerHTML += `<div class="chat-bubble-ia" style="color: #ff5555;"><b>Sistema:</b> Error al conectar con el backend. Asegúrate de que Pydroid 3 esté en ejecución.</div>`;
+        }
     }
 }
