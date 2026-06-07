@@ -3,46 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOCXIMA IA - Multichain Ecosystem</title>
-    <link rel="stylesheet" href="estilo-socxima/tarjetas.css">
+    <title>SOCXIMA IA | Web3 Engine</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+    <div class="container">
+        <h1>⚡ SOCXIMA IA</h1>
+        <p class="subtitulo">Red Blockchain + Inteligencia Artificial</p>
 
-    <h1 style="color: #fff;">SOCXIMA <span style="color: #00ffcc;">IA</span></h1>
-
-    <div class="socxima-container">
-        
-        <div class="tarjeta-modulo">
-            <h3>Controlador de Billeteras Real</h3>
-            <div id="wallet-actions">
-                <button class="btn-wallet btn-eth" onclick="conectarMetaMask()">Conectar MetaMask (ETH)</button>
-                <button class="btn-wallet btn-sol" onclick="conectarPhantom()">Conectar Phantom (SOL)</button>
-            </div>
-            
-            <div id="telemetria-real" style="margin-top: 20px;">
-                <p><b>Wallet EVM:</b></p>
-                <div class="wallet-status" id="address-evm">Ninguna</div>
-                <p><b>Wallet Solana:</b></p>
-                <div class="wallet-status" id="address-solana">Ninguna</div>
-            </div>
-            
-            <div id="contenedor-graficas" style="margin-top: 20px;"></div>
+        <div class="estado">
+            <span class="activo">✅ Conectado a Termux</span>
+            <span class="puerto">Puerto: 8000</span>
         </div>
 
-        <div class="tarjeta-modulo">
-            <h3>SOCXIMA IA Copilot Chat</h3>
-            <div class="chat-window" id="chat-output">
-                <p class="chat-bubble-ia">Sistema inicializado de forma segura. Conecta tus llaves públicas para comenzar el análisis financiero multired.</p>
-            </div>
-            <div style="display: flex; align-items: center;">
-                <input type="text" class="chat-input-text" id="input-mensaje-usuario" placeholder="Pregúntale a la IA...">
-                <button class="btn-enviar" onclick="enviarMensajeAI()">Enviar</button>
+        <div class="chat-box">
+            <div id="historial">
+                <div class="msg-sistema">Escribe tu consulta sobre saldos, bloques o seguridad...</div>
             </div>
         </div>
 
+        <div class="input-area">
+            <input type="text" id="mensaje" placeholder="Ej: ¿Cuál es el bloque actual?" onkeydown="if(event.key === 'Enter') enviar()">
+            <button onclick="enviar()">ENVIAR</button>
+        </div>
     </div>
 
-    <script src="../socxima-controller.js"></script>
-    <script src="graficos.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
