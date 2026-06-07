@@ -1,10 +1,7 @@
-<div id="wallet-actions">
-    <button onclick="conectarMetaMask()">Conectar MetaMask (ETH/EVM)</button>
-    <button onclick="conectarPhantom()">Conectar Phantom (Solana)</button>
+<div id="seccion-chat" style="background: #121212; padding: 15px; border-radius: 8px; margin-top: 20px;">
+    <h3>Asistente de IA Copiloto</h3>
+    <div id="chat-output" style="height: 200px; overflow-y: auto; border: 1px solid #333; padding: 10px; background: #000; margin-bottom: 10px; border-radius: 4px;">
+        </div>
+    <input type="text" id="input-mensaje-usuario" placeholder="Pregúntale a SOCXIMA IA sobre tus saldos..." style="width: 75%; padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
+    <button onclick="enviarMensajeAI()" style="padding: 8px 15px; background: #00ffcc; color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Enviar</button>
 </div>
-
-<div id="telemetria-real">
-    <p>Wallet EVM: <span id="address-evm">Ninguna</span></p>
-    <p>Wallet Solana: <span id="address-solana">Ninguna</span></p>
-</div>
-
