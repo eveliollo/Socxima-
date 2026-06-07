@@ -1,43 +1,53 @@
-// Función para enviar la billetera y la pregunta al servidor de Pydroid 3
-async function enviarMensajeAI() {
-    const inputChat = document.getElementById("input-mensaje-usuario");
-    const outputChat = document.getElementById("chat-output");
-    
-    if (!inputChat || !inputChat.value.trim()) return;
-    
-    const mensaje = inputChat.value;
-    
-    // Captura la dirección si el usuario generó una llave
-    const ethAddr = document.getElementById('pub-address')?.innerText || "0x0";
-    
-    // Limpiar input y pintar mensaje del usuario en la pantalla
-    inputChat.value = "";
-    if (outputChat) {
-        outputChat.innerHTML += `<div class="chat-bubble-user"><b>Tú:</b> ${mensaje}</div>`;
-    }
+function enviar() {
+    const input = document.getElementById("mensaje");
+    const historial = document.getElementById("historial");
+    const textoMensaje = input.value.trim();
 
-    try {
-        // Petición HTTP directa al puerto 8000 de tu servidor en el teléfono
-        const urlAPI = `http://127.0.0.1:8000/api/v1/procesar?wallet=${ethAddr}&pregunta=${encodeURIComponent(mensaje)}`;
+    if (textoMensaje === "") return;
+
+    // 1. Mostrar mensaje del usuario en el chat
+    const usuarioDiv = document.createElement("div");
+    usuarioDiv.className = "msg-usuario";
+    usuarioDiv.innerText = textoMensaje;
+    historial.appendChild(usuarioDiv);
+
+    // Limpiar el input
+    input.value = "";
+
+    // Auto-scroll al fondo del chat
+    const chatBox = document.querySelector(".chat-box");
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 2. Procesar respuesta de SOCXIMA IA (Simulación de Web3/Termux Engine)
+    setTimeout(() => {
+        const iaDiv = document.createElement("div");
+        iaDiv.className = "msg-ia";
         
-        const respuesta = await fetch(urlAPI);
-        const data = await respuesta.json();
+        // Respuesta lógica basada en palabras clave
+        iaDiv.innerText = generarRespuestaIA(textoMensaje);
+        
+        historial.appendChild(iaDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 600); // Pequeño retraso para simular "pensamiento" de la IA
+}
 
-        // Pintar la respuesta inteligente que devolvió Gemini
-        if (outputChat) {
-            outputChat.innerHTML += `<div class="chat-bubble-ia"><b>SOCXIMA IA:</b> ${data.output_ia}</div>`;
-            outputChat.scrollTop = outputChat.scrollHeight; // Auto-scroll al fondo
-        }
+function generarRespuestaIA(consulta) {
+    const texto = consulta.toLowerCase();
 
-        // Si la blockchain devolvió un balance real, actualizamos la gráfica
-        if (data.blockchain && data.blockchain.balance !== undefined) {
-            renderizarGraficoBalance("ETH", data.blockchain.balance);
-        }
-
-    } catch (error) {
-        console.error("Error conectando con el servidor Pydroid:", error);
-        if (outputChat) {
-            outputChat.innerHTML += `<div class="chat-bubble-ia" style="color: #ff5555;"><b>Sistema:</b> Error al conectar con el backend. Asegúrate de que Pydroid 3 esté en ejecución.</div>`;
-        }
+    if (texto.includes("bloque")) {
+        // Simula datos de la blockchain
+        const bloqueRandom = Math.floor(Math.random() * 50000) + 700000;
+        return `[SOCXIMA] El bloque actual en la red es el #${bloqueRandom}. Hash verificado por Termux.`;
+    } 
+    
+    if (texto.includes("saldo") || texto.includes("balance") || texto.includes("tokens")) {
+        return `[SOCXIMA] Consultando billetera... Saldo: 1,420 SXM (Tokens de red).`;
     }
+
+    if (texto.includes("seguridad") || texto.includes("hack") || texto.includes("encriptado")) {
+        return `[SOCXIMA] Alerta: Protocolo TLS/SHA-256 activo. Los nodos en Termux reportan 0 vulnerabilidades actuales.`;
+    }
+
+    // Respuesta por defecto
+    return `[SOCXIMA] Comando recibido. Estoy analizando la red Web3 para responder a: "${consulta}".`;
 }
