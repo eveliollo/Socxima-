@@ -1,38 +1,41 @@
-// 1. CONEXIÓN REAL A METAMASK
-async function conectarMetaMask() {
-    if (window.ethereum) {
-        try {
-            // Solicita acceso real a las cuentas del usuario
-            const cuentas = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const walletEVM = cuentas[0];
-            document.getElementById('address-evm').innerText = walletEVM;
-            console.log("MetaMask conectada con éxito: ", walletEVM);
-            
-            // Aquí puedes enviar esta dirección a tu backend-socxima.py para procesar datos reales
-        } catch (error) {
-            console.error("Usuario rechazó la conexión a MetaMask", error);
-        }
-    } else {
-        alert("MetaMask no detectado. Instala la extensión para operar en producción.");
-    }
-}
-
-// 2. CONEXIÓN REAL A PHANTOM (SOLANA)
-async function conectarPhantom() {
-    // Las billeteras de Solana se inyectan comúnmente en window.solana
-    const isPhantomInstalled = window.solana && window.solana.isPhantom;
+// Función real para procesar el chat con Inteligencia Artificial
+async function enviarMensajeAI() {
+    const inputChat = document.getElementById("input-mensaje-usuario");
+    const outputChat = document.getElementById("chat-output"); // El contenedor donde se muestran los textos
     
-    if (isPhantomInstalled) {
-        try {
-            // Conexión real al proveedor de Solana
-            const resp = await window.solana.connect();
-            const walletSolana = resp.publicKey.toString();
-            document.getElementById('address-solana').innerText = walletSolana;
-            console.log("Phantom conectada con éxito. Clave Pública: ", walletSolana);
-        } catch (error) {
-            console.error("Usuario rechazó la conexión a Phantom", error);
+    if (!inputChat || !inputChat.value.trim()) return;
+    
+    const mensaje = inputChat.value;
+    console.log("Enviando mensaje a SOCXIMA IA:", mensaje);
+    
+    // Obtener las billeteras que están guardadas en la pantalla del HTML
+    const ethAddr = document.getElementById('address-evm')?.innerText || "";
+    const solAddr = document.getElementById('address-solana')?.innerText || "";
+    
+    // Limpiar el input de la pantalla para simular fluidez
+    inputChat.value = "";
+    if (outputChat) outputChat.innerHTML += `<p><b>Tú:</b> ${mensaje}</p>`;
+
+    try {
+        const respuesta = await fetch("http://localhost:8000/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                eth_address: ethAddr === "Ninguna" ? "" : ethAddr,
+                sol_address: solAddr === "Ninguna" ? "" : solAddr,
+                mensaje_usuario: mensaje
+            })
+        });
+
+        const data = await respuesta.json();
+        
+        if (outputChat) {
+            outputChat.innerHTML += `<p style="color: #00ffcc;"><b>SOCXIMA IA:</b> ${data.respuesta}</p>`;
+            // Auto-scrollear hacia abajo en el chat
+            outputChat.scrollTop = outputChat.scrollHeight;
         }
-    } else {
-        alert("Phantom Wallet no detectada. Instala la extensión para operar en Solana.");
+    } catch (error) {
+        console.error("Error conectando con el módulo de IA:", error);
+        if (outputChat) outputChat.innerHTML += `<p style="color: red;"><i>Error de conexión con el motor de IA.</i></p>`;
     }
 }
