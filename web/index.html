@@ -1,184 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOCXIMA.IA — Quantum Crypto Intelligence</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="estilo-socxima/estilo.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCXIMA | Quantum Crypto Intelligence</title>
+  <link rel="stylesheet" href="./estilo-socxima/estilo.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
 </head>
 <body>
-
-  <!-- FONDO ANIMADO -->
+  <!-- Fondo y efectos -->
   <div class="grid-bg"></div>
   <div class="scanlines"></div>
-  <div class="particles" id="particles"></div>
+  <div id="particles-container"></div>
 
-  <!-- TOPBAR -->
+  <!-- Barra superior -->
   <header class="topbar">
     <div class="logo-wrap">
-      <span class="logo">⬡ SOCXIMA</span>
-      <span class="logo-sub">QUANTUM CRYPTO INTELLIGENCE</span>
+      <div class="logo">SOCXIMA</div>
+      <div class="logo-sub">QUANTUM • CRYPTO • INTELLIGENCE</div>
     </div>
+
     <nav class="nav-tabs">
-      <button class="nav-tab active" data-panel="terminal">TERMINAL</button>
-      <button class="nav-tab" data-panel="bloques">BLOQUES</button>
-      <button class="nav-tab" data-panel="graficos">GRÁFICOS</button>
-      <button class="nav-tab" data-panel="dola">DOLA AI</button>
+      <div class="nav-tab active" data-panel="terminal">Terminal</div>
+      <div class="nav-tab" data-panel="bloques">Estructura</div>
+      <div class="nav-tab" data-panel="graficos">Análisis</div>
+      <div class="nav-tab" data-panel="chat">Inteligencia</div>
     </nav>
+
     <div class="status-cluster">
       <div class="sol-badge">
         <span class="sol-dot"></span>
-        SOL MAINNET
+        RED ACTIVA
       </div>
-      <span class="live-tps" id="live-tps">TPS: —</span>
-      <span class="live-dot"></span>
-      <span class="live-label">LIVE</span>
+      <div class="live-badge flex items-center gap-2">
+        <span class="live-dot"></span>
+        <span class="live-label">MERCADO</span>
+        <span class="live-tps" id="live-tps">CARGANDO...</span>
+      </div>
     </div>
   </header>
 
-  <!-- MAIN LAYOUT -->
+  <!-- Contenido principal -->
   <main class="layout">
 
     <!-- PANEL: TERMINAL -->
-    <section class="panel active" id="panel-terminal">
-      <div class="panel-header">
-        <span class="ph-icon">◈</span>
-        <span class="ph-title">COMMAND TERMINAL</span>
-        <span class="ph-status" id="status-badge">● CONECTADO</span>
-      </div>
-
+    <section class="panel active" id="terminal">
       <div class="terminal-grid">
-        <!-- INPUT -->
-        <div class="input-block">
-          <label class="field-label">CONSULTA OPERATIVA</label>
-          <textarea id="input-consulta" class="terminal-input" rows="4"
-            placeholder="Ej: Analiza el bloque BTC actual y dame señales de trading..."></textarea>
+        <div>
+          <label class="field-label">Consulta Blockchain</label>
+          <textarea class="terminal-input" id="input-comando" rows="6" placeholder="Escribe tu instrucción, dirección o consulta..."></textarea>
           <div class="btn-row">
             <button class="btn-primary" id="btn-ejecutar">
-              <span class="btn-icon">⚡</span> EJECUTAR
+              <span>▷</span> EJECUTAR
             </button>
             <button class="btn-ghost" id="btn-limpiar">LIMPIAR</button>
           </div>
         </div>
 
-        <!-- RESPUESTA -->
         <div class="output-block">
           <div class="output-label">
-            <span>RESPUESTA DOLA</span>
-            <span class="thinking-indicator" id="thinking" style="display:none">
-              <span class="dot-pulse"></span> procesando...
-            </span>
+            <span>RESULTADO</span>
+            <span id="estado-proceso">• LISTO</span>
           </div>
-          <div class="output-text" id="output-respuesta">
-            Esperando comando operativo...
+          <div class="output-text" id="output-texto"></div>
+          <div class="thinking-indicator" id="indicador-pensando" style="display: none;">
+            PROCESANDO INFORMACIÓN <span class="dot-pulse"></span>
           </div>
         </div>
       </div>
 
-      <!-- MÉTRICAS RÁPIDAS -->
-      <div class="metrics-row" id="metrics-row" style="display:none">
-        <div class="metric-card" id="mc-btc">
-          <div class="mc-label">BTC BLOQUE</div>
-          <div class="mc-value" id="mv-btc">—</div>
+      <!-- Métricas rápidas -->
+      <div class="metrics-row" id="metrics-row" style="display: none;">
+        <div class="metric-card">
+          <div class="mc-label">Bloque actual</div>
+          <div class="mc-value" id="mc-bloque">—</div>
         </div>
-        <div class="metric-card" id="mc-merkle">
-          <div class="mc-label">MERKLE ROOT</div>
-          <div class="mc-value mono truncate" id="mv-merkle">—</div>
+        <div class="metric-card">
+          <div class="mc-label">Transacciones</div>
+          <div class="mc-value" id="mc-txs">—</div>
         </div>
-        <div class="metric-card" id="mc-sol">
-          <div class="mc-label">SOL SLOT</div>
-          <div class="mc-value" id="mv-sol">—</div>
+        <div class="metric-card">
+          <div class="mc-label">Dificultad</div>
+          <div class="mc-value mono truncate" id="mc-diff">—</div>
         </div>
-        <div class="metric-card" id="mc-txs">
-          <div class="mc-label">TXS ANALIZADAS</div>
-          <div class="mc-value" id="mv-txs">—</div>
+        <div class="metric-card">
+          <div class="mc-label">Hash raíz</div>
+          <div class="mc-value mono truncate" id="mc-root">—</div>
         </div>
+      </div>
+
+      <!-- Consola de eventos -->
+      <div class="consola-wrap">
+        <div class="consola-label">REGISTRO DE SISTEMA</div>
+        <div class="consola-log" id="consola-log"></div>
       </div>
     </section>
 
-    <!-- PANEL: BLOQUES -->
-    <section class="panel" id="panel-bloques">
+    <!-- PANEL: ESTRUCTURA DE BLOQUES -->
+    <section class="panel" id="bloques">
       <div class="panel-header">
-        <span class="ph-icon">⬡</span>
-        <span class="ph-title">BLOCKCHAIN LIVE</span>
-        <button class="btn-ghost sm" id="btn-refresh-bloques">↻ ACTUALIZAR</button>
+        <span class="ph-icon">⧉</span>
+        <h2 class="ph-title">Arquitectura de Bloques</h2>
+        <span class="ph-status">SINCRONIZADO</span>
       </div>
+
       <div class="bloques-stats">
         <div class="bstat">
-          <div class="bstat-label">ÚLTIMO BLOQUE BTC</div>
-          <div class="bstat-val" id="bs-btc">—</div>
+          <div class="bstat-label">ALTURA</div>
+          <div class="bstat-val" id="b-altura">—</div>
         </div>
         <div class="bstat">
-          <div class="bstat-label">SLOT SOLANA</div>
-          <div class="bstat-val" id="bs-sol">—</div>
+          <div class="bstat-label">VOLUMEN</div>
+          <div class="bstat-val" id="b-volumen">—</div>
         </div>
         <div class="bstat">
-          <div class="bstat-label">TXS PROCESADAS</div>
-          <div class="bstat-val" id="bs-txs">—</div>
+          <div class="bstat-label">TIEMPO</div>
+          <div class="bstat-val sm mono" id="b-tiempo">—</div>
         </div>
         <div class="bstat">
-          <div class="bstat-label">MERKLE ROOT</div>
-          <div class="bstat-val mono sm" id="bs-merkle">—</div>
+          <div class="bstat-label">VERSION</div>
+          <div class="bstat-val sm mono" id="b-ver">—</div>
         </div>
       </div>
-      <div class="consola-wrap">
-        <div class="consola-label">▸ CONSOLA CRIPTOGRÁFICA</div>
-        <div class="consola-log" id="consola-log">
-          <div class="clog-line init">[ SOCXIMA v5 ] Sistema iniciado. Esperando datos del bloque...</div>
-        </div>
+
+      <div class="chart-container h-[320px]">
+        <canvas id="chart-estructura"></canvas>
       </div>
     </section>
 
     <!-- PANEL: GRÁFICOS -->
-    <section class="panel" id="panel-graficos">
+    <section class="panel" id="graficos">
       <div class="panel-header">
-        <span class="ph-icon">📊</span>
-        <span class="ph-title">ANÁLISIS VISUAL DE BLOQUES</span>
+        <span class="ph-icon">⟍⟋</span>
+        <h2 class="ph-title">Análisis Dinámico</h2>
+        <span class="ph-status">TIEMPO REAL</span>
       </div>
-      <div class="chart-container">
-        <canvas id="canvas-socxima"></canvas>
+
+      <div class="chart-container h-[380px]">
+        <canvas id="chart-txs"></canvas>
       </div>
-      <div class="chart-meta" id="chart-meta">
-        Ejecuta una consulta para visualizar datos del bloque actual.
-      </div>
+      <div class="chart-meta" id="chart-meta">Historial de transacciones últimos 5 minutos</div>
     </section>
 
-    <!-- PANEL: DOLA AI CHAT -->
-    <section class="panel" id="panel-dola">
+    <!-- PANEL: INTELIGENCIA SOCXIMA -->
+    <section class="panel" id="chat">
       <div class="panel-header">
-        <span class="ph-icon">🧠</span>
-        <span class="ph-title">DOLA — SUPERINTELIGENCIA OPERATIVA</span>
+        <span class="ph-icon">⚛</span>
+        <h2 class="ph-title">SOCXIMA AI</h2>
+        <span class="ph-status">CONECTADA</span>
       </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-bubble ai">
-          Sistema DOLA v5 activado. Conectada a Bitcoin Core y Solana Mainnet.
-          Dame un comando y procesaré los datos criptográficos en tiempo real.
-        </div>
-      </div>
-      <div class="chat-input-row">
-        <input type="text" class="chat-input" id="chat-input"
-          placeholder="Consulta a DOLA..." />
-        <button class="btn-primary sm" id="btn-chat-send">ENVIAR</button>
+
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row mt-4">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Escribe tu consulta sobre mercado, redes o estrategia...">
+        <button class="btn-primary sm" id="btn-chat">ENVIAR</button>
       </div>
     </section>
 
   </main>
 
-  <!-- MARQUEE BOTTOM -->
-  <div class="marquee-bar">
-    <div class="marquee-inner" id="marquee-inner">
-      <span>BTC ₿ CARGANDO...</span>
-    </div>
-  </div>
+  <!-- Ticker de precios inferior -->
+  <footer class="marquee-bar">
+    <div class="marquee-inner" id="marquee-inner"></div>
+  </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   <script src="socxima-controller.js"></script>
-  <script src="graficos.js"></script>
   <script src="marquee-precios.js"></script>
+  <script src="graficos.js"></script>
 </body>
 </html>
-
