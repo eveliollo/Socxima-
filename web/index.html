@@ -1,290 +1,329 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SOCXIMA | Quantum Crypto Intelligence</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
-
-    :root {
-      --neon-purple: #9945FF;
-      --neon-cyan: #00E5FF;
-      --neon-green: #14F195;
-      --neon-pink: #ff007f;
-      --dark-bg: #03000a;
-      --panel-bg: rgba(10, 5, 24, 0.75);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    /* Fondo con cuadrícula cyberpunk animada */
-    body {
-      background-color: var(--dark-bg);
-      color: #f0e6ff;
-      font-family: 'Share Tech Mono', monospace;
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-image: 
-        linear-gradient(rgba(153, 69, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(153, 69, 255, 0.05) 1px, transparent 1px);
-      background-size: 20px 20px;
-      position: relative;
-    }
-
-    /* Efecto de línea de escáner vieja escuela CRT que se mueve */
-    body::before {
-      content: " ";
-      display: block;
-      position: fixed;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      z-index: 999;
-      background-size: 100% 4px, 6px 100%;
-      pointer-events: none;
-    }
-
-    /* Contenedor Principal (Simulando celular estirado) */
-    .app-container {
-      max-width: 480px;
-      width: 100%;
-      margin: 0 auto;
-      background: rgba(3, 0, 10, 0.95);
-      border-left: 1px solid rgba(153, 69, 255, 0.2);
-      border-right: 1px solid rgba(153, 69, 255, 0.2);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 40px;
-    }
-
-    /* HEADER */
-    header {
-      padding: 15px;
-      border-bottom: 2px solid var(--neon-purple);
-      box-shadow: 0 4px 15px rgba(153, 69, 255, 0.3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(8, 2, 20, 0.95);
-    }
-
-    .brand .title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--neon-cyan);
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px var(--neon-cyan);
-    }
-
-    .brand .subtitle {
-      font-size: 9px;
-      color: #6b4fa0;
-      letter-spacing: 1px;
-    }
-
-    .status-badge {
-      border: 1px solid var(--neon-green);
-      padding: 4px 8px;
-      font-size: 11px;
-      border-radius: 3px;
-      color: var(--neon-green);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: inset 0 0 8px rgba(20, 241, 149, 0.2);
-    }
-
-    /* Luz titilante de "RED ACTIVA" */
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      background-color: var(--neon-green);
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    /* PANELES CON LUZ ALUMBRADA */
-    main { padding: 15px; flex: 1; }
-
-    .section-title {
-      font-size: 13px;
-      color: var(--neon-cyan);
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-
-    .panel {
-      background: var(--panel-bg);
-      border: 1px solid rgba(153, 69, 255, 0.3);
-      border-radius: 4px;
-      padding: 15px;
-      margin-bottom: 20px;
-      position: relative;
-      box-shadow: 0 0 15px rgba(153, 69, 255, 0.1);
-    }
-
-    /* Borde luminoso izquierdo como la foto */
-    .panel.glow-left {
-      border-left: 3px solid var(--neon-cyan);
-      box-shadow: -5px 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(153, 69, 255, 0.1);
-    }
-
-    .textarea-custom {
-      width: 100%;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(153, 69, 255, 0.4);
-      color: #c4b8e8;
-      padding: 12px;
-      font-family: inherit;
-      font-size: 14px;
-      resize: none;
-      border-radius: 4px;
-    }
-    .textarea-custom:focus {
-      outline: none;
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
-    }
-
-    /* BOTONES ESTILO CUÁNTICO */
-    .button-group { display: flex; gap: 10px; margin-top: 10px; }
-
-    .btn-cyber {
-      background: transparent;
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 13px;
-      font-weight: bold;
-      padding: 10px 20px;
-      cursor: pointer;
-      position: relative;
-      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0% 30%);
-      transition: all 0.3s ease;
-      text-shadow: 0 0 5px var(--neon-cyan);
-      box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2);
-    }
-
-    .btn-cyber:hover {
-      background: var(--neon-cyan);
-      color: var(--dark-bg);
-      text-shadow: none;
-      box-shadow: 0 0 15px var(--neon-cyan);
-    }
-
-    .btn-clean {
-      background: transparent;
-      border: 1px solid rgba(153, 69, 255, 0.5);
-      color: #6b4fa0;
-      padding: 10px 15px;
-      font-family: inherit;
-      cursor: pointer;
-      font-size: 12px;
-    }
-    .btn-clean:hover { color: #fff; border-color: var(--neon-purple); }
-
-    /* LOGS CON LÍNEAS DE CARGA */
-    .log-line {
-      color: var(--neon-green);
-      font-size: 13px;
-      margin-bottom: 6px;
-      opacity: 0;
-      animation: writeText 0.5s forwards;
-    }
-    .log-line:nth-child(2) { animation-delay: 0.8s; }
-
-    /* TICKER INFERIOR (Criptomonedas) */
-    .ticker-footer {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #080214;
-      border-top: 1px solid var(--neon-purple);
-      padding: 8px;
-      z-index: 100;
-    }
-    .ticker-wrap {
-      display: flex;
-      justify-content: space-around;
-      max-width: 480px;
-      margin: 0 auto;
-      font-size: 11px;
-    }
-    .crypto-tag { display: flex; gap: 5px; }
-    .up { color: var(--neon-green); }
-    .down { color: var(--neon-pink); }
-
-    /* ANIMACIONES CSS */
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(20, 241, 149, 0.7); }
-      70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 6px rgba(20, 241, 149, 0); }
-      100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(20, 241, 149, 0); }
-    }
-
-    @keyframes writeText {
-      from { opacity: 0; transform: translateX(-5px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOCXIMA.IA — Quantum Crypto Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="estilo-socxima/estilo.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  <div class="app-container">
-    <header>
-      <div class="brand">
-        <div class="title">SOCXIMA</div>
-        <div class="subtitle">QUANTUM • CRYPTO • INTELLIGENCE</div>
-      </div>
-      <div class="status-badge">
-        <div class="pulse-dot"></div>
-        RED ACTIVA
-      </div>
-    </header>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <div class="particles" id="particles"></div>
 
-    <main>
-      <div class="section-title">Consulta Blockchain</div>
-      
-      <div class="panel">
-        <textarea class="textarea-custom" rows="4" placeholder="Escribe tu instrucción, dirección o consulta..."></textarea>
-        
-        <div class="button-group">
-          <button class="btn-cyber">▷ EJECUTAR</button>
-          <button class="btn-clean">LIMPIAR</button>
+  <header class="topbar">
+    <div class="logo-wrap">
+      <span class="logo">⬡ SOCXIMA</span>
+      <span class="logo-sub">QUANTUM CRYPTO INTELLIGENCE</span>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-panel="terminal">TERMINAL</button>
+      <button class="nav-tab" data-panel="bloques">BLOQUES</button>
+      <button class="nav-tab" data-panel="graficos">GRÁFICOS</button>
+      <button class="nav-tab" data-panel="dola">DOLA AI</button>
+    </nav>
+    <div class="status-cluster">
+      <div class="sol-badge">
+        <span class="sol-dot"></span>
+        SOL MAINNET
+      </div>
+      <span class="live-tps" id="live-tps">TPS: —</span>
+      <span class="live-dot"></span>
+      <span class="live-label">LIVE</span>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <section class="panel active" id="panel-terminal">
+      <div class="panel-header">
+        <span class="ph-icon">◈</span>
+        <span class="ph-title">COMMAND & LEARNING TERMINAL</span>
+        <span class="ph-status" id="status-badge">● CONECTADO</span>
+      </div>
+
+      <div class="terminal-grid">
+        <div class="input-block">
+          <label class="field-label">INGESTIÓN DE CÓDIGO RUST / SOLANA</label>
+          <textarea id="input-consulta" class="terminal-input" rows="4"
+            placeholder="Pega un fragmento de código oficial aquí. Ejemplo:&#10;pub const LAMPORTS_PER_SOL: u64 = 1_000_000_000;&#10;pub fn calcular_tarifa(firmas: u64) -> u64 { firmas * 5000 }"></textarea>
+          <div class="btn-row">
+            <button class="btn-primary" id="btn-ejecutar">
+              <span class="btn-icon">📖</span> LEER Y APRENDER
+            </button>
+            <button class="btn-ghost" id="btn-limpiar">LIMPIAR</button>
+          </div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">
+            <span>MEMORIA DINÁMICA DE LA IA</span>
+            <span class="thinking-indicator" id="thinking" style="display:none">
+              <span class="dot-pulse"></span> procesando semántica...
+            </span>
+          </div>
+          <div class="output-text" id="output-respuesta" style="white-space: pre-wrap; font-family: 'Share Tech Mono', monospace;">
+            Esperando código fuente ejecutable para entrenamiento de variables...
+          </div>
         </div>
       </div>
 
-      <div class="section-title">Resultado</div>
-      
-      <div class="panel glow-left">
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--neon-purple); margin-bottom:10px;">
-          <span>RESULTADO</span>
-          <span style="color:var(--neon-cyan); text-shadow:0 0 5px var(--neon-cyan); font-weight:bold;">• LISTO</span>
+      <div class="input-block" style="margin-top: 15px; border-top: 1px dashed rgba(153, 69, 255, 0.3); padding-top: 15px;">
+        <label class="field-label" style="color: var(--ia-azul, #00E5FF);">EJECUCIÓN ANALÍTICA DE VARIABLES</label>
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+          <input type="number" id="valor_ia" class="terminal-input" style="height: 42px; margin: 0; padding: 10px;" placeholder="Introduce un argumento numérico para procesar las reglas aprendidas..." />
+          <button class="btn-primary" id="btn-procesar-variable" style="white-space: nowrap; height: 42px;">⚡ PROCESAR</button>
         </div>
-        <div style="min-height: 80px; color:#a594d4; font-size:13px;">
-          // Esperando ejecución de consultas lógicas...
+        <div class="output-text" id="resultado_aplicado" style="min-height: 45px; background: rgba(5, 2, 12, 0.6); border-left: 2px solid var(--sol-purple, #9945FF);">
+          Sin variables asignadas en el buffer de ejecución.
         </div>
       </div>
 
-      <div class="section-title">Registro de Sistema</div>
-      
-      <div class="panel" style="background:#05020c;">
-        <div class="log-line">[9:20:42 p.m.] SOCXIMA NUCLEUS v1.0 inicializado</div>
-        <div class="log-line">[9:20:42 p.m.] Interfaz cargada · Esperando instrucciones</div>
+      <div class="metrics-row" id="metrics-row" style="display:none">
+        <div class="metric-card" id="mc-btc">
+          <div class="mc-label">BTC BLOQUE</div>
+          <div class="mc-value" id="mv-btc">—</div>
+        </div>
+        <div class="metric-card" id="mc-merkle">
+          <div class="mc-label">MERKLE ROOT</div>
+          <div class="mc-value mono truncate" id="mv-merkle">—</div>
+        </div>
+        <div class="metric-card" id="mc-sol">
+          <div class="mc-label">SOL SLOT</div>
+          <div class="mc-value" id="mv-sol">—</div>
+        </div>
+        <div class="metric-card" id="mc-txs">
+          <div class="mc-label">TXS ANALIZADAS</div>
+          <div class="mc-value" id="mv-txs">—</div>
+        </div>
       </div>
-    </main>
+    </section>
 
-    <div class="ticker-footer">
-      <div class="ticker-wrap">
-        <div class="crypto-tag"><span>SOL</span> <span class="up">$152.46 ↑ 3.54%</span></div>
-        <div class="crypto-tag"><span>MATIC</span> <span class="down">$0.60 ↓ 3.86%</span></div>
-        <div class="crypto-tag"><span>AVAX</span> <span class="up">$32.37 ↑ 0.69%</span></div>
+    <section class="panel" id="panel-bloques">
+      <div class="panel-header">
+        <span class="ph-icon">⬡</span>
+        <span class="ph-title">BLOCKCHAIN LIVE & UTILITIES</span>
+        <button class="btn-ghost sm" id="btn-refresh-bloques">↻ ACTUALIZAR</button>
       </div>
+      <div class="bloques-stats">
+        <div class="bstat">
+          <div class="bstat-label">ÚLTIMO BLOQUE BTC</div>
+          <div class="bstat-val" id="bs-btc">—</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-label">SLOT SOLANA</div>
+          <div class="bstat-val" id="bs-sol">—</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-label">TXS PROCESADAS</div>
+          <div class="bstat-val" id="bs-txs">—</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-label">MERKLE ROOT</div>
+          <div class="bstat-val mono sm" id="bs-merkle">—</div>
+        </div>
+      </div>
+
+      <div class="consola-wrap" style="margin-bottom: 15px; border: 1px solid rgba(0, 229, 255, 0.2); background: rgba(10, 5, 24, 0.6);">
+        <div class="consola-label" style="color: #00E5FF; display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+          <span>🔐 GENERADOR DE LLAVES ED25519 (MAINNET COMPATIBLE)</span>
+          <button class="btn-primary sm" id="btn-generar-claves" style="font-size: 11px; padding: 4px 10px;">GENERAR KEYPAIR</button>
+        </div>
+        <div class="consola-log" id="res-claves" style="min-height: 50px; font-family: 'Share Tech Mono', monospace; color: #14F195; padding: 10px;">
+          Presiona "GENERAR KEYPAIR" para crear llaves maestras asíncronas...
+        </div>
+      </div>
+
+      <div class="consola-wrap">
+        <div class="consola-label">▸ CONSOLA CRIPTOGRÁFICA ORIGINAL</div>
+        <div class="consola-log" id="consola-log">
+          <div class="clog-line init">[ SOCXIMA v5 ] Sistema iniciado. Esperando datos del bloque...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-graficos">
+      <div class="panel-header">
+        <span class="ph-icon">📊</span>
+        <span class="ph-title">ANÁLISIS VISUAL DE BLOQUES</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="canvas-socxima"></canvas>
+      </div>
+      <div class="chart-meta" id="chart-meta">
+        Ejecuta una consulta para visualizar datos del bloque actual.
+      </div>
+    </section>
+
+    <section class="panel" id="panel-dola">
+      <div class="panel-header">
+        <span class="ph-icon">🧠</span>
+        <span class="ph-title">DOLA — SUPERINTELIGENCIA OPERATIVA</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-bubble ai">
+          Sistema DOLA v5 activado. Conectada a Bitcoin Core y Solana Mainnet.
+          Dame un comando y procesaré los datos criptográficos en tiempo real.
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chat-input"
+          placeholder="Consulta a DOLA..." />
+        <button class="btn-primary sm" id="btn-chat-send">ENVIAR</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="marquee-bar">
+    <div class="marquee-inner" id="marquee-inner">
+      <span>BTC ₿ CARGANDO...</span>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@noble/ed25519@2.0.0/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@noble/hashes@1.3.2/sha256.js"></script>
+
+  <script src="socxima-controller.js"></script>
+  <script src="graficos.js"></script>
+  <script src="marquee-precios.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Base de conocimiento privada del motor del módulo Terminal
+      let baseConocimiento = {};
+
+      const btnEjecutar = document.getElementById('btn-ejecutar');
+      const inputConsulta = document.getElementById('input-consulta');
+      const outputRespuesta = document.getElementById('output-respuesta');
+      const thinkingIndicator = document.getElementById('thinking');
+      
+      const btnProcesarVariable = document.getElementById('btn-procesar-variable');
+      const valorIaInput = document.getElementById('valor_ia');
+      const resultadoAplicado = document.getElementById('resultado_aplicado');
+      
+      const btnGenerarClaves = document.getElementById('btn-generar-claves');
+      const resClaves = document.getElementById('res-claves');
+
+      // Evaluador matemático seguro aislado de vulnerabilidades globales
+      function evaluarExpresionSegura(expresion) {
+        const limpia = expresion.replace(/[^0-9+\-*/().\s]/g, '');
+        if (!limpia.trim()) return 0;
+        try {
+          const ejecutor = new Function(`return (${limpia});`);
+          return ejecutor();
+        } catch {
+          return "Fallo en sintaxis operacional";
+        }
+      }
+
+      // Función de Aprendizaje Estructural
+      if (btnEjecutar) {
+        btnEjecutar.addEventListener('click', () => {
+          const codigo = inputConsulta.value.trim();
+          if (!codigo) {
+            outputRespuesta.textContent = "⚠ Buffer vacío. Inserte código fuente de Rust/Solana estructural.";
+            return;
+          }
+
+          if (thinkingIndicator) thinkingIndicator.style.display = 'inline-block';
+          outputRespuesta.textContent = "Analizando semántica e hilos del núcleo del código...";
+
+          setTimeout(() => {
+            let reglasEncontradas = 0;
+            
+            // Extracción de constantes estables
+            const regexConst = /const\s+(\w+)\s*:.*?=\s*([\d_]+)/g;
+            let match;
+            while ((match = regexConst.exec(codigo)) !== null) {
+              const nombre = match[1];
+              const valor = Number(match[2].replace(/_/g, ''));
+              baseConocimiento[nombre] = valor;
+              reglasEncontradas++;
+            }
+
+            // Extracción de subprogramas y funciones matemáticas
+            const regexFunc = /fn\s+(\w+)\s*\(([^)]*)\).*?{\s*([^}]*)\s*}/g;
+            while ((match = regexFunc.exec(codigo)) !== null) {
+              const nombre = match[1];
+              const formula = match[3].trim();
+              baseConocimiento[nombre] = formula;
+              reglasEncontradas++;
+            }
+
+            if (thinkingIndicator) thinkingIndicator.style.display = 'none';
+
+            if (reglasEncontradas > 0) {
+              outputRespuesta.innerHTML = `<span style="color:#14F195;">✅ INGESTIÓN COMPLETADA CON ÉXITO.\nSe han indexado (${reglasEncontradas}) parámetros lógicos en la memoria cuántica:\n\n</span>${JSON.stringify(baseConocimiento, null, 2)}`;
+            } else {
+              outputRespuesta.innerHTML = `<span style="color:#FFD100;">⚠ ANÁLISIS COMPLETO:\nNo se han detectado estructuras funcionales 'const' o 'fn' válidas de Solana Core.</span>`;
+            }
+          }, 600);
+        });
+      }
+
+      // Procesador de inferencias sobre la memoria aprendida
+      if (btnProcesarVariable) {
+        btnProcesarVariable.addEventListener('click', () => {
+          const argInput = valorIaInput.value.trim();
+          if (!argInput || isNaN(argInput)) {
+            resultadoAplicado.textContent = "⚠ Asigne un coeficiente numérico operacional válido.";
+            return;
+          }
+
+          const valor = Number(argInput);
+          if (Object.keys(baseConocimiento).length === 0) {
+            resultadoAplicado.textContent = "⚠ El clúster de memoria está vacío. Analice un código primero en el módulo superior.";
+            return;
+          }
+
+          let logSalida = "";
+
+          if (baseConocimiento['LAMPORTS_PER_SOL']) {
+            const cálculoSol = valor * baseConocimiento['LAMPORTS_PER_SOL'];
+            logSalida += `• Inferencia Equivalencia: ${valor.toLocaleString()} SOL ➔ ${cálculoSol.toLocaleString()} Lamports totales.\n`;
+          }
+
+          if (baseConocimiento['calcular_tarifa']) {
+            const expMatematica = baseConocimiento['calcular_tarifa'].replace(/firmas/g, valor);
+            const resolucion = evaluarExpresionSegura(expMatematica);
+            logSalida += `• Inferencia de Red: Fee estimado para la operación ➔ ${resolucion.toLocaleString()} Lamports calculados dinámicamente.`;
+          }
+
+          resultadoAplicado.textContent = logSalida || "• Análisis completado: No se identificaron reglas matemáticas aplicables a este argumento.";
+        });
+      }
+
+      // Generación Criptográfica Asíncrona de Llaves Ed25519
+      if (btnGenerarClaves) {
+        btnGenerarClaves.addEventListener('click', async () => {
+          btnGenerarClaves.disabled = true;
+          resClaves.textContent = "Conectando al clúster de entropía del hardware...";
+          
+          try {
+            const privBytes = ed25519.utils.randomPrivateKey();
+            const pubBytes = await ed25519.getPublicKey(privBytes);
+            
+            const toB64 = b => btoa(String.fromCharCode(...b)).slice(0, 44);
+            
+            resClaves.innerHTML = `
+              <span style="color:#6B4FA0;">[KEYPAIR GENERADO EN CALIENTE]</span><br>
+              <strong>SEED (PRIVADA):</strong> <span style="color:#FFD100;">${toB64(privBytes)}</span><br>
+              <strong>ADDRESS (PÚBLICA):</strong> <span style="color:#00E5FF;">${toB64(pubBytes)}</span>
+            `;
+          } catch (e) {
+            resClaves.textContent = `Error criptográfico interno: ${e.message}`;
+          } finally {
+            btnGenerarClaves.disabled = false;
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
