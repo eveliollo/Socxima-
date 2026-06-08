@@ -12,10 +12,12 @@
 </head>
 <body>
 
+  <!-- FONDO ANIMADO -->
   <div class="grid-bg"></div>
   <div class="scanlines"></div>
   <div class="particles" id="particles"></div>
 
+  <!-- TOPBAR -->
   <header class="topbar">
     <div class="logo-wrap">
       <span class="logo">⬡ SOCXIMA</span>
@@ -38,52 +40,46 @@
     </div>
   </header>
 
+  <!-- MAIN LAYOUT -->
   <main class="layout">
 
+    <!-- PANEL: TERMINAL -->
     <section class="panel active" id="panel-terminal">
       <div class="panel-header">
         <span class="ph-icon">◈</span>
-        <span class="ph-title">COMMAND & LEARNING TERMINAL</span>
+        <span class="ph-title">COMMAND TERMINAL</span>
         <span class="ph-status" id="status-badge">● CONECTADO</span>
       </div>
 
       <div class="terminal-grid">
+        <!-- INPUT -->
         <div class="input-block">
-          <label class="field-label">INGESTIÓN DE CÓDIGO RUST / SOLANA</label>
+          <label class="field-label">CONSULTA OPERATIVA</label>
           <textarea id="input-consulta" class="terminal-input" rows="4"
-            placeholder="Pega un fragmento de código oficial aquí. Ejemplo:&#10;pub const LAMPORTS_PER_SOL: u64 = 1_000_000_000;&#10;pub fn calcular_tarifa(firmas: u64) -> u64 { firmas * 5000 }"></textarea>
+            placeholder="Ej: Analiza el bloque BTC actual y dame señales de trading..."></textarea>
           <div class="btn-row">
             <button class="btn-primary" id="btn-ejecutar">
-              <span class="btn-icon">📖</span> LEER Y APRENDER
+              <span class="btn-icon">⚡</span> EJECUTAR
             </button>
             <button class="btn-ghost" id="btn-limpiar">LIMPIAR</button>
           </div>
         </div>
 
+        <!-- RESPUESTA -->
         <div class="output-block">
           <div class="output-label">
-            <span>MEMORIA DINÁMICA DE LA IA</span>
+            <span>RESPUESTA DOLA</span>
             <span class="thinking-indicator" id="thinking" style="display:none">
-              <span class="dot-pulse"></span> procesando semántica...
+              <span class="dot-pulse"></span> procesando...
             </span>
           </div>
-          <div class="output-text" id="output-respuesta" style="white-space: pre-wrap; font-family: 'Share Tech Mono', monospace;">
-            Esperando código fuente ejecutable para entrenamiento de variables...
+          <div class="output-text" id="output-respuesta">
+            Esperando comando operativo...
           </div>
         </div>
       </div>
 
-      <div class="input-block" style="margin-top: 15px; border-top: 1px dashed rgba(153, 69, 255, 0.3); padding-top: 15px;">
-        <label class="field-label" style="color: var(--ia-azul, #00E5FF);">EJECUCIÓN ANALÍTICA DE VARIABLES</label>
-        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-          <input type="number" id="valor_ia" class="terminal-input" style="height: 42px; margin: 0; padding: 10px;" placeholder="Introduce un argumento numérico para procesar las reglas aprendidas..." />
-          <button class="btn-primary" id="btn-procesar-variable" style="white-space: nowrap; height: 42px;">⚡ PROCESAR</button>
-        </div>
-        <div class="output-text" id="resultado_aplicado" style="min-height: 45px; background: rgba(5, 2, 12, 0.6); border-left: 2px solid var(--sol-purple, #9945FF);">
-          Sin variables asignadas en el buffer de ejecución.
-        </div>
-      </div>
-
+      <!-- MÉTRICAS RÁPIDAS -->
       <div class="metrics-row" id="metrics-row" style="display:none">
         <div class="metric-card" id="mc-btc">
           <div class="mc-label">BTC BLOQUE</div>
@@ -104,10 +100,11 @@
       </div>
     </section>
 
+    <!-- PANEL: BLOQUES -->
     <section class="panel" id="panel-bloques">
       <div class="panel-header">
         <span class="ph-icon">⬡</span>
-        <span class="ph-title">BLOCKCHAIN LIVE & UTILITIES</span>
+        <span class="ph-title">BLOCKCHAIN LIVE</span>
         <button class="btn-ghost sm" id="btn-refresh-bloques">↻ ACTUALIZAR</button>
       </div>
       <div class="bloques-stats">
@@ -128,25 +125,15 @@
           <div class="bstat-val mono sm" id="bs-merkle">—</div>
         </div>
       </div>
-
-      <div class="consola-wrap" style="margin-bottom: 15px; border: 1px solid rgba(0, 229, 255, 0.2); background: rgba(10, 5, 24, 0.6);">
-        <div class="consola-label" style="color: #00E5FF; display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
-          <span>🔐 GENERADOR DE LLAVES ED25519 (MAINNET COMPATIBLE)</span>
-          <button class="btn-primary sm" id="btn-generar-claves" style="font-size: 11px; padding: 4px 10px;">GENERAR KEYPAIR</button>
-        </div>
-        <div class="consola-log" id="res-claves" style="min-height: 50px; font-family: 'Share Tech Mono', monospace; color: #14F195; padding: 10px;">
-          Presiona "GENERAR KEYPAIR" para crear llaves maestras asíncronas...
-        </div>
-      </div>
-
       <div class="consola-wrap">
-        <div class="consola-label">▸ CONSOLA CRIPTOGRÁFICA ORIGINAL</div>
+        <div class="consola-label">▸ CONSOLA CRIPTOGRÁFICA</div>
         <div class="consola-log" id="consola-log">
           <div class="clog-line init">[ SOCXIMA v5 ] Sistema iniciado. Esperando datos del bloque...</div>
         </div>
       </div>
     </section>
 
+    <!-- PANEL: GRÁFICOS -->
     <section class="panel" id="panel-graficos">
       <div class="panel-header">
         <span class="ph-icon">📊</span>
@@ -160,6 +147,7 @@
       </div>
     </section>
 
+    <!-- PANEL: DOLA AI CHAT -->
     <section class="panel" id="panel-dola">
       <div class="panel-header">
         <span class="ph-icon">🧠</span>
@@ -180,150 +168,16 @@
 
   </main>
 
+  <!-- MARQUEE BOTTOM -->
   <div class="marquee-bar">
     <div class="marquee-inner" id="marquee-inner">
       <span>BTC ₿ CARGANDO...</span>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@noble/ed25519@2.0.0/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@noble/hashes@1.3.2/sha256.js"></script>
-
+  <!-- SCRIPTS -->
   <script src="socxima-controller.js"></script>
   <script src="graficos.js"></script>
   <script src="marquee-precios.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Base de conocimiento privada del motor del módulo Terminal
-      let baseConocimiento = {};
-
-      const btnEjecutar = document.getElementById('btn-ejecutar');
-      const inputConsulta = document.getElementById('input-consulta');
-      const outputRespuesta = document.getElementById('output-respuesta');
-      const thinkingIndicator = document.getElementById('thinking');
-      
-      const btnProcesarVariable = document.getElementById('btn-procesar-variable');
-      const valorIaInput = document.getElementById('valor_ia');
-      const resultadoAplicado = document.getElementById('resultado_aplicado');
-      
-      const btnGenerarClaves = document.getElementById('btn-generar-claves');
-      const resClaves = document.getElementById('res-claves');
-
-      // Evaluador matemático seguro aislado de vulnerabilidades globales
-      function evaluarExpresionSegura(expresion) {
-        const limpia = expresion.replace(/[^0-9+\-*/().\s]/g, '');
-        if (!limpia.trim()) return 0;
-        try {
-          const ejecutor = new Function(`return (${limpia});`);
-          return ejecutor();
-        } catch {
-          return "Fallo en sintaxis operacional";
-        }
-      }
-
-      // Función de Aprendizaje Estructural
-      if (btnEjecutar) {
-        btnEjecutar.addEventListener('click', () => {
-          const codigo = inputConsulta.value.trim();
-          if (!codigo) {
-            outputRespuesta.textContent = "⚠ Buffer vacío. Inserte código fuente de Rust/Solana estructural.";
-            return;
-          }
-
-          if (thinkingIndicator) thinkingIndicator.style.display = 'inline-block';
-          outputRespuesta.textContent = "Analizando semántica e hilos del núcleo del código...";
-
-          setTimeout(() => {
-            let reglasEncontradas = 0;
-            
-            // Extracción de constantes estables
-            const regexConst = /const\s+(\w+)\s*:.*?=\s*([\d_]+)/g;
-            let match;
-            while ((match = regexConst.exec(codigo)) !== null) {
-              const nombre = match[1];
-              const valor = Number(match[2].replace(/_/g, ''));
-              baseConocimiento[nombre] = valor;
-              reglasEncontradas++;
-            }
-
-            // Extracción de subprogramas y funciones matemáticas
-            const regexFunc = /fn\s+(\w+)\s*\(([^)]*)\).*?{\s*([^}]*)\s*}/g;
-            while ((match = regexFunc.exec(codigo)) !== null) {
-              const nombre = match[1];
-              const formula = match[3].trim();
-              baseConocimiento[nombre] = formula;
-              reglasEncontradas++;
-            }
-
-            if (thinkingIndicator) thinkingIndicator.style.display = 'none';
-
-            if (reglasEncontradas > 0) {
-              outputRespuesta.innerHTML = `<span style="color:#14F195;">✅ INGESTIÓN COMPLETADA CON ÉXITO.\nSe han indexado (${reglasEncontradas}) parámetros lógicos en la memoria cuántica:\n\n</span>${JSON.stringify(baseConocimiento, null, 2)}`;
-            } else {
-              outputRespuesta.innerHTML = `<span style="color:#FFD100;">⚠ ANÁLISIS COMPLETO:\nNo se han detectado estructuras funcionales 'const' o 'fn' válidas de Solana Core.</span>`;
-            }
-          }, 600);
-        });
-      }
-
-      // Procesador de inferencias sobre la memoria aprendida
-      if (btnProcesarVariable) {
-        btnProcesarVariable.addEventListener('click', () => {
-          const argInput = valorIaInput.value.trim();
-          if (!argInput || isNaN(argInput)) {
-            resultadoAplicado.textContent = "⚠ Asigne un coeficiente numérico operacional válido.";
-            return;
-          }
-
-          const valor = Number(argInput);
-          if (Object.keys(baseConocimiento).length === 0) {
-            resultadoAplicado.textContent = "⚠ El clúster de memoria está vacío. Analice un código primero en el módulo superior.";
-            return;
-          }
-
-          let logSalida = "";
-
-          if (baseConocimiento['LAMPORTS_PER_SOL']) {
-            const cálculoSol = valor * baseConocimiento['LAMPORTS_PER_SOL'];
-            logSalida += `• Inferencia Equivalencia: ${valor.toLocaleString()} SOL ➔ ${cálculoSol.toLocaleString()} Lamports totales.\n`;
-          }
-
-          if (baseConocimiento['calcular_tarifa']) {
-            const expMatematica = baseConocimiento['calcular_tarifa'].replace(/firmas/g, valor);
-            const resolucion = evaluarExpresionSegura(expMatematica);
-            logSalida += `• Inferencia de Red: Fee estimado para la operación ➔ ${resolucion.toLocaleString()} Lamports calculados dinámicamente.`;
-          }
-
-          resultadoAplicado.textContent = logSalida || "• Análisis completado: No se identificaron reglas matemáticas aplicables a este argumento.";
-        });
-      }
-
-      // Generación Criptográfica Asíncrona de Llaves Ed25519
-      if (btnGenerarClaves) {
-        btnGenerarClaves.addEventListener('click', async () => {
-          btnGenerarClaves.disabled = true;
-          resClaves.textContent = "Conectando al clúster de entropía del hardware...";
-          
-          try {
-            const privBytes = ed25519.utils.randomPrivateKey();
-            const pubBytes = await ed25519.getPublicKey(privBytes);
-            
-            const toB64 = b => btoa(String.fromCharCode(...b)).slice(0, 44);
-            
-            resClaves.innerHTML = `
-              <span style="color:#6B4FA0;">[KEYPAIR GENERADO EN CALIENTE]</span><br>
-              <strong>SEED (PRIVADA):</strong> <span style="color:#FFD100;">${toB64(privBytes)}</span><br>
-              <strong>ADDRESS (PÚBLICA):</strong> <span style="color:#00E5FF;">${toB64(pubBytes)}</span>
-            `;
-          } catch (e) {
-            resClaves.textContent = `Error criptográfico interno: ${e.message}`;
-          } finally {
-            btnGenerarClaves.disabled = false;
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
