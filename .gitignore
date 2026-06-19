@@ -1,0 +1,6 @@
+# NUNCA exponer el motor exclusivo
+src/nucleo_real.rs
+core/
+.env
+target/
+Cargo.lock
